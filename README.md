@@ -17,6 +17,8 @@
     - ```mkdir {data,etc,logs,my.cnf}```
     - ```docker-compose -f docker-compose.yml up```
   - 本地即开启了 MySQL 服务，登录认证用户名为 ```root```，密码为 ```sep2023@```
+  - 部署成功后会看到下面的图
+![MySQL](images/mysqlconfig.png)
 
 ## 时间安排
 | 任务 | 开始时间 | 结束时间 | 交付结果 |

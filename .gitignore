@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 #MySQL
-.mysqlv57/
-!.mysqlv57/docker-compose.yml
+/mysqlv57/**/
+!/mysqlv57/docker-compose.yml
