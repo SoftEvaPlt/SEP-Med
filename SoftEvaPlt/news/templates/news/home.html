@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap 模板</title>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href={% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/home.css' %}>
+  </head>
+
+  <body>
+    <div class="row">
+        <div class="col-md-2 left-bg">
+            <!-- 左侧内容 -->
+            <h1>hello</h1>
+            <h1>hello</h1>
+            <h1>hello</h1>
+            <h1>hello</h1>
+            <h1>hello</h1>
+            <h1>hello</h1>
+        </div>
+        <div class="col-md-10">
+            <!-- 右侧内容 -->
+            <h1>world</h1>
+        </div>
+    </div>
+    
+
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+  </body>
+</html>
