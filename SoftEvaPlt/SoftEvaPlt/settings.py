@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "news",
+    "administration",
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "HOST": "127.0.0.1",
         "PORT": "3306",
-        "NAME": "SoftEvaPlt",
+        "NAME": "mysql",
         "USER": "root",
         "PASSWORD": "sep2023@",
     }
