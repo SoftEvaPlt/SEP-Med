@@ -30,15 +30,15 @@ def login_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        user_account = request.POST['user_account']
         password = request.POST['password']
         print(request.POST)
-        print(username)
+        print(user_account)
         print(password)
 
         # 使用自定义用户模型进行身份验证
         try:
-            user = User.objects.get(user_account=username)
+            user = User.objects.get(user_account=user_account)
             if user.user_password == password:
                 # 如果用户名和密码匹配，登录用户
                 # login(request, user)
@@ -53,5 +53,9 @@ def login_view(request):
 
     return render(request, 'news/login.html')
 
+def logon_view(request):
+    return render(request, 'news/logon.html')
+
 def home(request):
     return render(request, 'news/home.html')
+
