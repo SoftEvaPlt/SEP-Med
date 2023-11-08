@@ -110,18 +110,29 @@
 
 
     <div>
-        <form method="post" action="/admin/new_indicators">
+        <form method="post"  action="/admin/indicators">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            <label>类别</label>
+            {{ form.si_category }}
+            <label>名称</label>
+            {{ form.si_name }}
+            <input type="submit" value="创建！"/>
+        </form>
+
+
+        <!-- <form method="post" action="/admin/indicators">
             {% csrf_token %}
                 <label>类别</label>
-                    <input type="text" class="form-control&quot" placeholder="请输入指标类别"
+                    <input type="text" class="form-control&quot" name="category" placeholder="请输入指标类别"
                         required />
                 <label>名称</label>
-                    <input type="text" class=form-control&quot" placeholder="请输入指标名称"
+                    <input type="text" class=form-control&quot" name="name" placeholder="请输入指标名称"
                         required />
             <button type="submit" class="btn btn-primary btn-block">
                 创建！
             </button>
-        </form>
+        </form> -->
 
     </div>
 
