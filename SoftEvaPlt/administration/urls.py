@@ -7,5 +7,6 @@ urlpatterns = [
     path('admin/', views.admin_view),
     path('admin/indicators', views.indicators_view),
     path('admin/scenes', views.scenes_view),
-    path('admin/new_indicator', views.new_indicator)
+    path('admin/ind_create', views.ind_create),
+    path('admin/ind_update', views.ind_update),
 ]

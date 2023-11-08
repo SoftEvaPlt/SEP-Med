@@ -110,7 +110,7 @@
 
     <div class="container">
         <div style="margin-bottom: 10px">
-            <a class="btn btn-success" href="new_indicator">
+            <a class="btn btn-success" href="ind_create">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                 新建指标
             </a>
@@ -142,10 +142,26 @@
                         <td>{{ si.si_creator }}</td>
                         <td>{{ si.si_create_time }}</td>
                         <td>
+                            <!-- <script type="text/javascript">
+                                function del(){
+                                    if(confirm("确定删除吗？")){
+                                        const csrfToken = "{{ csrf_token }}";
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open("POST", "indicators", true);
+                                        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                                        xhr.send('action=delete');
+                                    }
+                                }
+                            </script> -->
                             <a class="btn btn-primary btn-xs">启用</a>
                             <a class="btn btn-primary btn-xs">禁用</a>
-                            <a class="btn btn-primary btn-xs">编辑</a>
-                            <a class="btn btn-danger btn-xs">删除</a>
+                            <a class="btn btn-primary btn-xs" href="ind_update?id={{ si.si_id }}">编辑</a>
+                            <form method="post" action="/admin/indicators">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="{{ si.si_id }}">
+                                <input class="btn btn-danger btn-xs" type="submit" value="删除"/>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
