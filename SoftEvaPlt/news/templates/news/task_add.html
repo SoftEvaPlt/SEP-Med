@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>医学信息安全评价主页</title>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- 兼容IE浏览器 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 引入 Bootstrap的css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+    <!-- 必须添加的bootstarp的时间控件资源路径 -->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet"> 
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.25.3/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <form method="get" action="/home/task_add">
+        {% csrf_token %}
+        <div class="col-md-10 col-sm-10 col-xs-10" style="margin-top: 20px;">
+          <h4><strong>任务信息</strong></h4>
+        </div>
+  
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+              <div class="text-group">
+                <label class="control-label">*任务名称</label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <input
+              type="text"
+              maxlength="30"
+              class="form-control"
+              id="task_name"
+              name="task_name"
+              placeholder="请输入，30字"
+              required
+              />    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+              <div class="text-group">
+                <label class="control-label">*应用场景</label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  选择
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
+                  <!-- 需要传入数据库场景列表 -->
+                  {% for scene_name in scene_name_data %}
+                    <li><a href="#">{{ scene_name.scene_name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+              <div class="text-group">
+                <label class="control-label">*安全指标</label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  选择
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu2">
+                  <!-- 需要传入数据库场景列表 -->
+                  {% for si_category in si_category_data %}
+                    <li><a href="#">{{ si_category.si_category }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-10 col-sm-10 col-xs-10" style="margin-top: 20px;">
+          <h4><strong>产品信息</strong></h4>
+        </div>
+  
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="text-group">
+                <label class="control-label">*产品名称</label>
+              </div>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+              <input
+              type="text"
+              maxlength="20"
+              class="form-control"
+              id="product_name"
+              name="product_name"
+              placeholder="请输入，20字"
+              required
+              />    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="text-group">
+                <label class="control-label">*产品名称</label>
+              </div>
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+              <input
+              type="text"
+              maxlength="20"
+              class="form-control"
+              id="product_name"
+              name="product_name"
+              placeholder="请输入，20字"
+              required
+              />    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+              <div class="text-group">
+                <label class="control-label">版本号</label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <input
+              type="text"
+              maxlength="20"
+              class="form-control"
+              id="product_version"
+              name="product_version"
+              placeholder="请输入，20字"
+              required
+              />    
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2">
+              <div class="text-group">
+                <label class="control-label">产品描述</label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-4">
+              <input
+              type="text"
+              maxlength="200"
+              class="form-control"
+              id="product_description"
+              name="product_description"
+              placeholder="请输入，200字"
+              required
+              />    
+            </div>
+          </div>
+        </div>
+  
+  
+  
+  
+  
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        // 监听下拉菜单中的选项点击事件
+        $('#dropdownMenu1 + ul a').on('click', function() {
+          // 获取被点击的选项文本
+          var selectedOption = $(this).text();
+          // 设置下拉菜单按钮上显示的文本为选中的选项文本
+          $('#dropdownMenu1').html(selectedOption + ' <span class="caret"></span>');
+        });
+        // 监听下拉菜单中的选项点击事件
+        $('#dropdownMenu2 + ul a').on('click', function() {
+          // 获取被点击的选项文本
+          var selectedOption = $(this).text();
+          // 设置下拉菜单按钮上显示的文本为选中的选项文本
+          $('#dropdownMenu2').html(selectedOption + ' <span class="caret"></span>');
+        });
+      });
+    </script>
+  </body>
+</html>

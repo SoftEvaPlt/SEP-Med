@@ -1,3 +1,10 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
@@ -30,7 +37,7 @@ class Scene(models.Model):
 class Task(models.Model):
     task_id = models.IntegerField(primary_key=True, db_comment='任务ID')
     task_name = models.CharField(unique=True, max_length=30, db_comment='任务名称')
-    task_state = models.IntegerField(db_comment='任务状态')
+    task_state = models.ForeignKey('TaskStateTable', models.DO_NOTHING, db_column='task_state', db_comment='任务状态')
     scene = models.ForeignKey(Scene, models.DO_NOTHING, db_comment='应用场景（场景ID）')
     task_creator = models.ForeignKey('User', models.DO_NOTHING, db_column='task_creator', db_comment='任务创建人（用户ID）')
     task_create_time = models.DateTimeField(db_comment='任务创建时间')
@@ -83,6 +90,15 @@ class TaskSi(models.Model):
         unique_together = (('task', 'si'),)
 
 
+class TaskStateTable(models.Model):
+    task_state_id = models.IntegerField(primary_key=True, db_comment='任务状态')
+    task_state_name = models.CharField(max_length=30, db_comment='任务状态名称')
+
+    class Meta:
+        managed = True
+        db_table = 'task_state_table'
+
+
 class User(models.Model):
     user_id = models.IntegerField(primary_key=True, db_comment='用户ID')
     user_account = models.CharField(unique=True, max_length=30, db_comment='用户账号')
@@ -90,7 +106,7 @@ class User(models.Model):
     user_name = models.CharField(unique=True, max_length=20, db_comment='用户账号')
     user_authority = models.IntegerField(db_comment='用户权限')
     user_email = models.CharField(max_length=30, blank=True, null=True, db_comment='用户邮箱')
-    user_phone = models.IntegerField(blank=True, null=True, db_comment='用户电话号码')
+    user_phone = models.CharField(max_length=11, blank=True, null=True, db_comment='用户电话号码')
 
     class Meta:
         managed = True
