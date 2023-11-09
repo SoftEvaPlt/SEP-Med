@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Max
 from .models import SafetyIndicator
 from .forms import IndicatorForm
 from datetime import datetime
@@ -14,7 +15,7 @@ def indicators_view(request):
     #     return render(request, 'indicators.html', {'si_queryset': all_si})
     if request.method == 'POST':
         if request.POST.get('action') == 'create':
-            SafetyIndicator.objects.create(si_id = len(SafetyIndicator.objects.all()) + 1,
+            SafetyIndicator.objects.create(si_id = SafetyIndicator.objects.aggregate(Max('si_id'))['si_id__max'] + 1,
                                             si_category = request.POST.get('category'),
                                             si_name = request.POST.get('name'),
                                             si_state = 1,
@@ -26,6 +27,14 @@ def indicators_view(request):
             SafetyIndicator.objects.filter(si_id = request.POST.get('id')).update(
                 si_category = request.POST.get('category'),
                 si_name = request.POST.get('name'))
+        if request.POST.get('action') == 'enable':
+            SafetyIndicator.objects.filter(si_id = request.POST.get('id')).update(
+                si_state = 1
+            )
+        if request.POST.get('action') == 'disable':
+            SafetyIndicator.objects.filter(si_id = request.POST.get('id')).update(
+                si_state = 0
+            )
     all_si = SafetyIndicator.objects.all()
     return render(request, 'indicators.html', {'si_queryset': all_si})
         

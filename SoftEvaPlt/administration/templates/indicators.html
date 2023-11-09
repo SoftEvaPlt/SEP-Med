@@ -123,7 +123,8 @@
                 <table class="table table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>指标ID</th>
+                        <th>指标编号</th>
+                        <!-- <th>指标ID</th> -->
                         <th>指标类别</th>
                         <th>指标名称</th>
                         <th>指标状态</th>
@@ -135,7 +136,8 @@
                     <tbody>
                     {% for si in si_queryset %}
                     <tr>
-                        <td>{{ si.si_id }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <!-- <td>{{ si.si_id }}</td> -->
                         <td>{{ si.si_category }}</td>
                         <td>{{ si.si_name }}</td>
                         <td>{{ si.si_state }}</td>
@@ -153,8 +155,18 @@
                                     }
                                 }
                             </script> -->
-                            <a class="btn btn-primary btn-xs">启用</a>
-                            <a class="btn btn-primary btn-xs">禁用</a>
+                            <form method="post" action="/admin/indicators">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="enable">
+                                <input type="hidden" name="id" value="{{ si.si_id }}">
+                                <input class="btn btn-primary btn-xs" type="submit" value="启用"/>
+                            </form>
+                            <form method="post" action="/admin/indicators">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="disable">
+                                <input type="hidden" name="id" value="{{ si.si_id }}">
+                                <input class="btn btn-primary btn-xs" type="submit" value="禁用"/>
+                            </form>
                             <a class="btn btn-primary btn-xs" href="ind_update?id={{ si.si_id }}">编辑</a>
                             <form method="post" action="/admin/indicators">
                                 {% csrf_token %}
