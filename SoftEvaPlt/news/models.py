@@ -44,8 +44,8 @@ class Task(models.Model):
     product_name = models.CharField(unique=True, max_length=20, db_comment='产品名称')
     product_version = models.CharField(max_length=20, blank=True, null=True, db_comment='产品版本号')
     product_description = models.CharField(max_length=200, blank=True, null=True, db_comment='产品描述')
-    product_td = models.TextField(db_column='product_TD', blank=True, null=True, db_comment='产品拓扑图')  # Field name made lowercase.
-    product_ad = models.TextField(db_column='product_AD', blank=True, null=True, db_comment='产品架构图')  # Field name made lowercase.
+    product_td = models.ImageField(upload_to='images/', db_column='product_TD', blank=True, null=True, db_comment='产品拓扑图')  # Field name made lowercase.
+    product_ad = models.ImageField(upload_to='images/', db_column='product_AD', blank=True, null=True, db_comment='产品架构图')  # Field name made lowercase.
     app_ip = models.PositiveIntegerField(db_column='app_IP', blank=True, null=True, db_comment='应用IP')  # Field name made lowercase.
     app_domain_name = models.CharField(max_length=200, blank=True, null=True, db_comment='应用域名')
     app_starting_url = models.CharField(db_column='app_starting_URL', max_length=200, blank=True, null=True, db_comment='起始URL')  # Field name made lowercase.

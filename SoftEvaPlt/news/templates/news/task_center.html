@@ -159,8 +159,20 @@
                         <td>{{ task.task_create_time }}</td>
                         <td>
                             <a class="btn btn-primary btn-xs">查看</a>
-                            <a class="btn btn-primary btn-xs">上传报告</a>
-                            <a class="btn btn-primary btn-xs">检测报告</a>
+                            {% if task.task_state.task_state_name  == '已完成' %}
+                              <a class="btn btn-primary btn-xs">上传报告</a>
+                              <a class="btn btn-primary btn-xs">检测报告</a>
+                            {% endif %}
+                            {% if task.task_state.task_state_name  == '未开始' %}
+                              <a class="btn btn-primary btn-xs">派发</a>
+                              <a class="btn btn-primary btn-xs">删除</a>
+                            {% endif %}
+                            {% if task.task_state.task_state_name  == '评审通过' %}
+                              <a class="btn btn-primary btn-xs">复核</a>
+                            {% endif %}
+                            {% if task.task_state.task_state_name  == '检测中' %}
+                              <a class="btn btn-primary btn-xs">评估安全指标</a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}

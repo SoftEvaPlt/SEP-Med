@@ -1,11 +1,15 @@
 from django import forms
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # from django.contrib.auth import login
-from .models import User  # 导入自定义用户模型
+from .models import TaskSi, User  # 导入自定义用户模型
 from .models import Task
 from .models import Scene
 from .models import TaskStateTable
 from .models import SafetyIndicator
+from .models import Scene
+from .form import product_TD_form
+import ipaddress
 
 '''
 def login_view(request):
@@ -112,7 +116,7 @@ def task_center(request, page):
     # 如果用户未输入page参数，默认为1
     if page == None:
         page = 1
-    page_max_item = 5   # 一页最多多少行数据
+    page_max_item = 7   # 一页最多多少行数据
     start = (page - 1) * page_max_item  # 切片开始位
     end = page * page_max_item  #切片结束位
     total = all_task_data.count()   # 计数
@@ -166,71 +170,107 @@ def home_task_center(request, page):
     print(page)
     return render(request, 'news/home_task_center.html', {"page": page})
 
-'''
-class TaskAddForm(forms.ModelForm):
-    # 新建任务的ModelForm
-    class Meta:
-        model = Task
-        fields = ["task_id", "task_name", "task_state", "scene", "task_creator", "task_create_time",
-                  "product_name", "product_version", "product_description", "product_td" ,"product_ad",
-                  "app_ip", "app_domain_name", "app_starting_url", "app_port", "app_name", "app_os_version"]
-'''
+def ip_to_int(ip_address):
+    try:
+        ip_int = int(ipaddress.IPv4Address(ip_address))
+        return ip_int
+    except ipaddress.AddressValueError:
+        # 处理无效的 IP 地址
+        return None
+
 def task_add(request):
     all_scene_data = Scene.objects.all()
     all_si_data = SafetyIndicator.objects.all()
+    display_si = SafetyIndicator.objects.filter(si_state=1).first()
     if request.method == "POST":
-        new_task = Task()
-        task_name = request.POST['task_name']
-        scene_name = request.POST['dropdownMenu1-value']
-        si_category = request.POST['dropdownMenu2-value']
-        product_name = request.POST['product_name']
-        '''
-        new_img = Task(
-            product_TD = request.FILES.get('product_TD'),  # 拿到图片
-            product_AD = request.FILES.get('product_AD')
-        )
-        # new_img.save()  # 保存图片'''
-        product_version = request.POST['product_version']
-        product_description = request.POST['product_description']
-        app_IP = request.POST['app_IP']
-        app_DN = request.POST['app_DN']
-        app_starting_url = request.POST['app_starting_url']
-        app_port = request.POST['app_port']
-        app_name = request.POST['app_name']
-        app_os_version = request.POST['app_os_version']
+        if 'submit_all' in request.POST:
+            new_task = Task()
+            task_name = request.POST.get('task_name')
+            scene_name = request.POST.get('dropdownMenu1-value')
+            product_name = request.POST.get('product_name')
+            '''
+            new_img = Task(
+                product_TD = request.FILES.get('product_TD'),  # 拿到图片
+                product_AD = request.FILES.get('product_AD')
+            )
+            # new_img.save()  # 保存图片'''
+            product_version = request.POST.get('product_version')
+            product_description = request.POST.get('product_description')
+            app_IP = request.POST.get('app_IP')
+            app_DN = request.POST.get('app_DN')
+            app_starting_url = request.POST.get('app_starting_url')
+            app_port = request.POST.get('app_port')
+            app_name = request.POST.get('app_name')
+            app_os_version = request.POST.get('app_os_version')
 
-        new_task.task_id = '66666666'   # TODO 自动创建ID
-        new_task.task_name = task_name
-        # new_task.task_state = 0   # TODO 连表查询改为id
-        # new_task.scene = scene_name # TODO 连表查询改为id
-        # new_task.si_category = si_category # TODO 改为可以创建多个安全指标，并且实现连表查询
-        new_task.product_name = product_name
-        new_task.product_version = product_version
-        new_task.product_description = product_description
-        new_task.app_ip = app_IP
-        new_task.app_domain_name = app_DN
-        new_task.app_starting_url = app_starting_url
-        new_task.app_port = app_port
-        new_task.app_name = app_name
-        new_task.app_os_version = app_os_version
-        new_task.save()
+            new_task.task_id = Task.objects.latest('task_id').task_id + 1   # 获得最大的id并加一
+            new_task.task_name = task_name
+            new_task.task_state = TaskStateTable.objects.filter(task_state_name="未开始").first()   # 默认状态是0未开始
+            new_task.scene = Scene.objects.filter(scene_name=scene_name).first() # 连表查询改为id
+            new_task.task_creator = User.objects.filter(user_name='admin').first()  # TODO 需要传递登录信息
+            new_task.product_name = product_name
+            if product_version:
+                new_task.product_version = product_version
+            if product_description:
+                new_task.product_description = product_description
+            if app_IP:
+                new_task.app_ip = ip_to_int(app_IP)
+            if app_DN:
+                new_task.app_domain_name = app_DN
+            if app_starting_url:
+                new_task.app_starting_url = app_starting_url
+            if app_port:
+                new_task.app_port = app_port
+            if app_name:
+                new_task.app_name = app_name
+            if app_os_version:
+                new_task.app_os_version = app_os_version
+            new_task.save()
 
-        print(task_name)
-        print(scene_name)
-        print(si_category)
-        print(product_name)
-        print(product_version)
-        print(product_description)
-        print(app_IP)
-        print(app_DN)
-        print(app_starting_url)
-        print(app_port)
-        print(app_name)
-        print(app_os_version)
 
-        return redirect('/home/task_center/', page=1)
+            print(Task.objects.latest('task_id').task_id + 1)
+            print(task_name)
+            print(TaskStateTable.objects.filter(task_state_name="未开始").first())
+            print(Scene.objects.filter(scene_name=scene_name).first())
+            print(scene_name)
+            print(product_name)
+            print(product_version)
+            print(product_description)
+            print(app_IP)
+            print(ip_to_int(app_IP))
+            print(app_DN)
+            print(app_starting_url)
+            print(app_port)
+            print(app_name)
+            print(app_os_version)
 
-    return render(request, 'news/task_add.html', {"scene_name_data": all_scene_data, "si_category_data": all_si_data})
+            # 可以创建多个安全指标，并且实现连表查询，插入多条记录
+            si_category = request.POST.get('dropdownMenu2-value')   # 获取多选的字符串
+            si_category_list = si_category.split('/')               # 分割获得列表
+            # 创建插入多条记录的列表
+            new_task_si_list = []
+            for si in si_category_list:
+                new_task_si_list.append(TaskSi(
+                    task=Task.objects.latest('task_id'),    # 获得最大的id
+                    si=SafetyIndicator.objects.filter(si_category=si).first()))
+            # 一次插入多条记录
+            TaskSi.objects.bulk_create(new_task_si_list)
+
+            return redirect('/task_center/1/')
+
+    return render(request, 'news/task_add.html', {"scene_name_data": all_scene_data, "si_category_data": all_si_data, "display_si": display_si})
 
 def home_task_add(request):
     return render(request, 'news/home_task_add.html')
+
+def upload_image(request):
+    if request.method == "POST":
+        print("你好图片")
+        form = product_TD_form(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/home/task_center/', page=1)
+        else:
+            form = product_TD_form()
+
+    return render(request, 'news/task_add.html', {'form': form})

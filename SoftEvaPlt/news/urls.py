@@ -11,4 +11,5 @@ urlpatterns = [
     path('home/task_center/<int:page>/', views.home_task_center, name='home_task_center'),
     path('task_add/', views.task_add, name='task_add'),
     path('home/task_add/', views.home_task_add, name='home_task_add'),
+    path('upload_image/', views.upload_image, name='upload_image'),
 ]

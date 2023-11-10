@@ -23,7 +23,7 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <form method="post" action="/task_add/">
+        <form id="textForm1" method="post" action="/task_add/">
           {% csrf_token %}
           <div class="col-md-10 col-sm-10 col-xs-10" style="margin-top: 20px;">
             <h4><strong>任务信息</strong></h4>
@@ -59,10 +59,8 @@
               </div>
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="dropdown">
-                  <input type="hidden" id='dropdownMenu1-value' name="dropdownMenu1-value" value=全部> 
-                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    选择
-                    <span class="caret"></span>
+                  <input type="hidden" id='dropdownMenu1-value' name="dropdownMenu1-value" value="{{ scene_name_data.0.scene_name }}"> 
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ scene_name_data.0.scene_name }}<span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
                     <!-- 需要传入数据库场景列表 -->
@@ -84,15 +82,18 @@
               </div>
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="dropdown">
-                  <input type="hidden" id='dropdownMenu2-value' name="dropdownMenu2-value" value=全部> 
-                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    选择
-                    <span class="caret"></span>
+                  <input type="hidden" id='dropdownMenu2-value' name="dropdownMenu2-value" value="{{ display_si.si_category }}"> 
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ display_si.si_category }}<span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu2">
                     <!-- 需要传入数据库场景列表 -->
                     {% for si_category in si_category_data %}
-                      <li><a href="#">{{ si_category.si_category }}</a></li>
+                      {% if si_category.si_state == 1 %}
+                        {% comment %} <a class="dropdown-items"> {% endcomment %}
+                          {% comment %} <input type="checkbox"> {{ si_category.si_category }} {% endcomment %}
+                        {% comment %} </a> {% endcomment %}
+                        <li><a href="#">{{ si_category.si_category }}</a></li>
+                      {% endif %}
                     {% endfor %}
                   </ul>
                 </div>    
@@ -124,7 +125,10 @@
               </div>
             </div>
           </div>
+        <!--</form>-->
 
+        {% comment %} <form id="imageForm1" method="post" action="/upload_image/" enctype="multipart/form-data"> {% endcomment %}
+          {% comment %} {% csrf_token %} {% endcomment %}
           <div class="col-md-4 col-sm-4 col-xs-4">
             <div class="row">
               <div class="col-md-4 col-sm-4 col-xs-4">
@@ -132,13 +136,17 @@
                   <label class="control-label">产品拓扑图</label>
                 </div>
               </div>
-              <div class="col-md-8 col-sm-8 col-xs-8">      
+              <div class="col-md-8 col-sm-8 col-xs-8">     
                 <input name="product_TD" type="image" id="exampleInputFile" src="{% static "images/image_icon.png" %}">
+                {{ form }} 
                 <button id="product_TD_button" class="btn btn-danger" type="submit">上传图片</button> 
               </div>
             </div>
           </div>
+        {% comment %} </form> {% endcomment %}
 
+        {% comment %} <form id="imageForm2" method="post" action="/upload_image/" enctype="multipart/form-data"> {% endcomment %}
+          {% comment %} {% csrf_token %} {% endcomment %}
           <div class="col-md-4 col-sm-4 col-xs-4">
             <div class="row">
               <div class="col-md-4 col-sm-4 col-xs-4">
@@ -152,7 +160,10 @@
               </div>
             </div>
           </div>
+        {% comment %} </form> {% endcomment %}
     
+        {% comment %} <form id="textForm2" method="post" action="/task_add/">   {% endcomment %}
+          {% comment %} {% csrf_token %} {% endcomment %}
           <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
             <div class="row">
               <div class="col-md-2 col-sm-2 col-xs-2">
@@ -181,15 +192,7 @@
               </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-6">
-              <textarea
-              maxlength="200"
-              class="form-control"
-              id="product_description"
-              name="product_description"
-              placeholder="请输入，200字"
-              cols="20" 
-              rows="5">  
-              </textarea>  
+              <textarea maxlength="200" class="form-control" id="product_description" name="product_description" placeholder="请输入，200字" cols="20"  rows="5" style="resize: none;"></textarea>  
             </div>
           </div>
         </div>
@@ -328,7 +331,7 @@
         <div class="row" style="margin-top: 40px">
           <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
             <div class="row">
-              <button type="submit" class="btn btn-default btn-block">
+              <button type="reset" class="btn btn-default btn-block">
                 取消
               </button>
             </div>
@@ -336,14 +339,12 @@
 
           <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
             <div class="row">
-              <button type="submit" class="btn btn-primary btn-block">
+              <button type="submit" class="btn btn-primary btn-block" name="submit_all">
                 确定
               </button>
             </div>
           </div>
         </div>
-
-        
       </form>
   
   
@@ -365,12 +366,83 @@
         $('#dropdownMenu2 + ul a').on('click', function() {
           // 获取被点击的选项文本
           var selectedOption = $(this).text();
-          // 设置下拉菜单按钮上显示的文本为选中的选项文本
-          $('#dropdownMenu2').html(selectedOption + ' <span class="caret"></span>');
-          //设置input中的value
-          $('#dropdownMenu2-value').val(selectedOption);
+          // 获取原本的文本
+          var originOption = $('#dropdownMenu2').text();
+
+          // 检查是否已经包含选中的选项
+          if (!originOption.includes(selectedOption)) {
+            var combinedValue = (originOption + '/' + selectedOption).replace(/\s/g, '');
+            // 设置下拉菜单按钮上显示的文本为选中的选项文本
+            $('#dropdownMenu2').html(combinedValue + ' <span class="caret"></span>');
+            // 将 originOption 和 selectedOption 连接在一起，以/分隔
+            //设置input中的value
+            $('#dropdownMenu2-value').val(combinedValue);
+          }
+        });
+        // 监听右键点击事件
+        $('#dropdownMenu2 + ul a').on('contextmenu', function(e) {
+          // 阻止默认的右键菜单
+          e.preventDefault();
+
+          // 获取被右键点击的选项文本
+          var selectedOption = $(this).text();
+          // 获取原本的文本
+          var originOption = $('#dropdownMenu2').text();
+
+          if (originOption.includes('/')) {
+            // 从原本的文本中移除被右键点击的选项文本
+            var updatedText = originOption.replace('/' + selectedOption, '').replace(selectedOption + '/', '');
+
+            // 设置下拉菜单按钮上显示的文本为更新后的文本
+            $('#dropdownMenu2').html(updatedText + ' <span class="caret"></span>');
+          
+            // 设置input中的value为更新后的文本
+            $('#dropdownMenu2-value').val(updatedText);
+          }
         });
       });
+      /*
+      document.addEventListener("DOMContentLoaded", function() {
+        var textForm1 = document.getElementById("textForm1");
+        var imageForm1 = document.getElementById("imageForm1");
+        var imageForm2 = document.getElementById("imageForm2");
+        var textForm2 = document.getElementById("textForm2");
+      
+        var textSubmitButton = textForm2.querySelector("button[type='submit']");
+        var imageSubmitButton1 = imageForm1.querySelector("button[type='submit']");
+        var imageSubmitButton2 = imageForm2.querySelector("button[type='submit']");
+      
+        // 提交文本表单
+        textSubmitButton.addEventListener("click", function(event) {
+          // 阻止默认的表单提交行为
+          event.preventDefault();
+          if (textForm1.checkValidity()) {
+            // 执行文本表单的提交
+            textForm1.submit();
+            imageForm1.submit();
+            imageForm2.submit();
+            textForm2.submit();
+          } else{
+            alert("请填写必填信息");
+          }
+        });
+      
+        // 提交图片1表单
+        imageSubmitButton1.addEventListener("click", function(event) {
+          // 阻止默认的表单提交行为
+          event.preventDefault();
+          // 执行图片1表单的提交
+          imageForm1.submit();
+        });
+
+        // 提交图片2表单
+        imageSubmitButton2.addEventListener("click", function(event) {
+          // 阻止默认的表单提交行为
+          event.preventDefault();
+          // 执行图片2表单的提交
+          imageForm2.submit();
+        });
+      });*/
     </script>
   </body>
 </html>
