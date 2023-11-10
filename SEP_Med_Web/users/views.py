@@ -4,6 +4,7 @@ from .models import User
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.hashers import make_password,check_password
+from django.db.models import Max
 
 def login_view(request):
     if request.method == 'POST':
@@ -52,6 +53,8 @@ def register_view(request):
                 return render(request, 'users/register.html', {'form': form, 'error_message': error_message})
             else:
                 print(form.cleaned_data)
+                max_user_id = User.objects.aggregate(Max('user_id'))['user_id__max']
+                next_user_id = max_user_id + 1 if max_user_id else 1
                 user = User(
                     user_account = user_account,
                     # 对密码进行加密处理
@@ -59,7 +62,7 @@ def register_view(request):
                     user_name = form.cleaned_data['user_name'],
                     user_email = form.cleaned_data['user_email'],
                     user_phone = form.cleaned_data['user_phone'],
-                    user_id = User.objects.count() + 1,
+                    user_id = next_user_id,
                     user_authority = 0
                 )
                 print(user_password)
@@ -67,9 +70,9 @@ def register_view(request):
                 # 可以添加其他逻辑，比如注册成功后的重定向或信息提示
                 return redirect('users:home')
     else:
-        error_message = "注册错误"
+        # error_message = "注册错误"
         form = RegistrationForm()
-        return render(request, 'users/register.html', {'form': form, 'error_message': error_message})
+        return render(request, 'users/register.html', {'form': form})
         
     return render(request, 'users/register.html', {'form': form})
 

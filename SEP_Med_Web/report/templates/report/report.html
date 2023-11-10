@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .highlight-green {
+            background-color: #228B22; /* 绿色背景 */
+        }
+
+        .highlight-red {
+            background-color: #FF4500; /* 红色背景 */
+        }
+
+        h3 {
+            color: #ACC0E0; /* 设置文字颜色为蓝色，你可以根据需要更改颜色值 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Safety Assessment Report - Company Name</h2>
+    <h3> 创建人: {{creator }}     创建时间:{{created_time}}</h3>
+    <table id="editableTable">
+        <tbody>
+        {{ safety_assessment_table|safe }}
+        </tbody>
+    </table>
+    <a href="/home/report">Generate Report</a>
+</div>
+</body>
+</html>
