@@ -12,4 +12,5 @@ urlpatterns = [
     path('task_add/', views.task_add, name='task_add'),
     path('home/task_add/', views.home_task_add, name='home_task_add'),
     path('upload_image/', views.upload_image, name='upload_image'),
+    path('upload_image_page/', views.upload_image_page, name='upload_image_page'),
 ]

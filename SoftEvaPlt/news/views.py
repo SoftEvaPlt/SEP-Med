@@ -1,6 +1,8 @@
+import os
 from django import forms
+from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 # from django.contrib.auth import login
 from .models import TaskSi, User  # 导入自定义用户模型
 from .models import Task
@@ -256,7 +258,7 @@ def task_add(request):
             # 一次插入多条记录
             TaskSi.objects.bulk_create(new_task_si_list)
 
-            return redirect('/task_center/1/')
+            return redirect('/upload_image_page/')
 
     return render(request, 'news/task_add.html', {"scene_name_data": all_scene_data, "si_category_data": all_si_data, "display_si": display_si})
 
@@ -264,13 +266,28 @@ def home_task_add(request):
     return render(request, 'news/home_task_add.html')
 
 def upload_image(request):
-    if request.method == "POST":
-        print("你好图片")
-        form = product_TD_form(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/home/task_center/', page=1)
-        else:
-            form = product_TD_form()
+    # TODO 增加分别上传两种图片的按钮，优化上传页面，将add的确定改为下一步
+    # 获取一个文件管理器对象
+    file = request.FILES['pic']
+    task_id = str(Task.objects.latest('task_id').task_id)
 
-    return render(request, 'news/task_add.html', {'form': form})
+    # 保存文件
+    file_name = task_id + 'product_TD' + os.path.splitext(file.name)[1]
+    print(file_name)
+
+	# 将要保存的地址和文件名称
+    where = settings.MEDIA_IMAGE_PATH + file_name
+    print(where)
+    # 分块保存image
+    content = file.chunks()
+    with open(where, 'wb') as f:
+        for i in content:
+            f.write(i)
+
+    # 上传文件名称到数据库
+    Task.objects.filter(task_id=task_id).update(product_td=where)
+
+    return HttpResponse('ok')
+
+def upload_image_page(request):
+    return render(request, 'news/upload_image.html')

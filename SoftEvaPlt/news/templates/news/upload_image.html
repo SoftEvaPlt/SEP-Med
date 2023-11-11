@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>医学信息安全评价主页</title>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- 兼容IE浏览器 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 引入 Bootstrap的css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+    <!-- 必须添加的bootstarp的时间控件资源路径 -->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet"> 
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.25.3/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+  </head>
+
+  <body>
+    <form method="post" action="/upload_image/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- 其他表单字段... -->
+        <p>选择图片：<input type="file" name="pic"></p>
+        <p><input type="submit" value="上传头像"></p>
+    </form>
+    
+
+
+
+
+    <script>
+     
+    </script>
+  </body>
+</html>

@@ -130,4 +130,5 @@ X_FRAME_OPTIONS = 'ALLOWALL url'
 
 # 设置静态文件路径为主目录下的media文件夹
 MEDIA_ROOT = os.path.join(BASE_DIR, 'statics/media')
+MEDIA_IMAGE_PATH = 'statics/media/images/'
 MEDIA_URL = '/media/'
