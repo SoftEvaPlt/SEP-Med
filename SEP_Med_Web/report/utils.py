@@ -1,9 +1,8 @@
 import pandas as pd
-import numpy as np
 from django.db import connection
 from bs4 import BeautifulSoup
 
-def create_pivot(df,index_list=["task_name", "scene_name", "si_name "], value_list=["score"]):
+def create_pivot(df):
     """
     Create a pivot table from a raw DataFrame and return it as a DataFrame
     """

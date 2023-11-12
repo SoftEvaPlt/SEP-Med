@@ -1,11 +1,6 @@
-from django.shortcuts import render
 from jinja2 import Environment, FileSystemLoader
-# from weasyprint import HTML
 from .utils import make_score_editable,create_pivot,get_data_as_dataframe
-import pandas as pd
 from django.http import HttpResponse
-
-# Create your views here.
 
 # 从数据库中读取数据，并整理
 def create_report_view(request):
@@ -26,15 +21,4 @@ def create_report_view(request):
                     }
     # 使用这些变量渲染HTML
     html_out = template.render(template_vars)
-    # # 生成PDF
-    # # HTML(string=html_out).write_pdf("report.pdf")
-    # HTML(string=html_out).write_pdf(args.outfile.name, stylesheets=["style.css"])
-        # 生成PDF
-    # response = HttpResponse(content_type='application/pdf')
-    # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-    # HTML(string=html_out).write_pdf(response, stylesheets=["style.css"])
-    
-    # HTML(string=html_out).write_pdf("report.pdf")
-    # return response
-    # return render(request,'report/report.html',template_vars)
     return HttpResponse(html_out)
