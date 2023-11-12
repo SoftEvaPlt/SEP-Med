@@ -45,7 +45,12 @@
                 name="task_name"
                 placeholder="请输入，30字"
                 required
-                />    
+                />
+                {% if task_error_message %}
+                <div class="alert alert-danger" role="alert">
+                  {{ task_error_message }} 
+                </div>
+                {% endif %}    
               </div>
             </div>
           </div>
@@ -105,14 +110,14 @@
             <h4><strong>产品信息</strong></h4>
           </div>
     
-          <div class="col-md-4 col-sm-4 col-xs-4">
+          <div class="col-md-8 col-sm-8 col-xs-8">
             <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-4">
+              <div class="col-md-2 col-sm-2 col-xs-2">
                 <div class="text-group">
                   <label class="control-label">*产品名称</label>
                 </div>
               </div>
-              <div class="col-md-8 col-sm-8 col-xs-8">
+              <div class="col-md-4 col-sm-4 col-xs-4">
                 <input
                 type="text"
                 maxlength="20"
@@ -122,47 +127,15 @@
                 placeholder="请输入，20字"
                 required
                 />    
-              </div>
-            </div>
-          </div>
-        <!--</form>-->
-
-        {% comment %} <form id="imageForm1" method="post" action="/upload_image/" enctype="multipart/form-data"> {% endcomment %}
-          {% comment %} {% csrf_token %} {% endcomment %}
-          <div class="col-md-4 col-sm-4 col-xs-4">
-            <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-4">
-                <div class="text-group">
-                  <label class="control-label">产品拓扑图</label>
+                {% if product_error_message %}
+                <div class="alert alert-danger" role="alert">
+                  {{ product_error_message }} 
                 </div>
-              </div>
-              <div class="col-md-8 col-sm-8 col-xs-8">     
-                <input name="product_TD" type="image" id="exampleInputFile" src="{% static "images/image_icon.png" %}">
-                <button id="product_TD_button" class="btn btn-danger" type="submit">上传图片</button> 
+                {% endif %} 
               </div>
             </div>
           </div>
-        {% comment %} </form> {% endcomment %}
 
-        {% comment %} <form id="imageForm2" method="post" action="/upload_image/" enctype="multipart/form-data"> {% endcomment %}
-          {% comment %} {% csrf_token %} {% endcomment %}
-          <div class="col-md-4 col-sm-4 col-xs-4">
-            <div class="row">
-              <div class="col-md-4 col-sm-4 col-xs-4">
-                <div class="text-group">
-                  <label class="control-label">产品架构图</label>
-                </div>
-              </div>
-              <div class="col-md-8 col-sm-8 col-xs-8">        
-                <input name="product_AD" type="image" id="exampleInputFile" src="{% static "images/image_icon.png" %}">
-                <button id="product_AD_button" class="btn btn-danger" type="submit">上传图片</button> 
-              </div>
-            </div>
-          </div>
-        {% comment %} </form> {% endcomment %}
-    
-        {% comment %} <form id="textForm2" method="post" action="/task_add/">   {% endcomment %}
-          {% comment %} {% csrf_token %} {% endcomment %}
           <div class="col-md-8 col-sm-8 col-xs-8" style="margin-top: 20px;">
             <div class="row">
               <div class="col-md-2 col-sm-2 col-xs-2">
@@ -330,7 +303,7 @@
         <div class="row" style="margin-top: 40px">
           <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
             <div class="row">
-              <button type="reset" class="btn btn-default btn-block">
+              <button type="reset" class="btn btn-default btn-block" onclick="change_center_URL()">
                 取消
               </button>
             </div>
@@ -339,7 +312,7 @@
           <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
             <div class="row">
               <button type="submit" class="btn btn-primary btn-block" name="submit_all">
-                确定
+                下一步
               </button>
             </div>
           </div>
@@ -400,48 +373,11 @@
           }
         });
       });
-      /*
-      document.addEventListener("DOMContentLoaded", function() {
-        var textForm1 = document.getElementById("textForm1");
-        var imageForm1 = document.getElementById("imageForm1");
-        var imageForm2 = document.getElementById("imageForm2");
-        var textForm2 = document.getElementById("textForm2");
-      
-        var textSubmitButton = textForm2.querySelector("button[type='submit']");
-        var imageSubmitButton1 = imageForm1.querySelector("button[type='submit']");
-        var imageSubmitButton2 = imageForm2.querySelector("button[type='submit']");
-      
-        // 提交文本表单
-        textSubmitButton.addEventListener("click", function(event) {
-          // 阻止默认的表单提交行为
-          event.preventDefault();
-          if (textForm1.checkValidity()) {
-            // 执行文本表单的提交
-            textForm1.submit();
-            imageForm1.submit();
-            imageForm2.submit();
-            textForm2.submit();
-          } else{
-            alert("请填写必填信息");
-          }
-        });
-      
-        // 提交图片1表单
-        imageSubmitButton1.addEventListener("click", function(event) {
-          // 阻止默认的表单提交行为
-          event.preventDefault();
-          // 执行图片1表单的提交
-          imageForm1.submit();
-        });
-
-        // 提交图片2表单
-        imageSubmitButton2.addEventListener("click", function(event) {
-          // 阻止默认的表单提交行为
-          event.preventDefault();
-          // 执行图片2表单的提交
-          imageForm2.submit();
-        });
-      });*/
+      // 在iframe内的JavaScript中
+      function change_center_URL(newURL) {
+        // 请求父级页面修改URL
+        window.parent.postMessage({ type: 'change_center_URL', newURL: '/home/task_center/1/' }, '*');
+      }
     </script>
   </body>
 </html>

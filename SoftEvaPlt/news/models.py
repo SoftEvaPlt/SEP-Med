@@ -81,8 +81,8 @@ class TaskOperation(models.Model):
 
 
 class TaskSi(models.Model):
-    task = models.OneToOneField(Task, models.DO_NOTHING, primary_key=True, db_comment='任务ID')  # The composite primary key (task_id, si_id) found, that is not supported. The first column is selected.
-    si = models.ForeignKey(SafetyIndicator, models.DO_NOTHING, db_comment='安全指标ID')
+    task = models.OneToOneField(Task, on_delete=models.CASCADE, primary_key=True, db_comment='任务ID')  # The composite primary key (task_id, si_id) found, that is not supported. The first column is selected.
+    si = models.ForeignKey(SafetyIndicator, on_delete=models.CASCADE, db_comment='安全指标ID')
 
     class Meta:
         managed = True

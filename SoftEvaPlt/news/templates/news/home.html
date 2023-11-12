@@ -11,78 +11,9 @@
 {% endblock %}  
 
 {% block body %}
-    <div class="row">
-      <div class="col-md-2 col-md-offset-1 col-sm-2 col-sm-offset-1 col-xs-2 col-xs-offset-1" style="margin-top: 40px;">
-        <div class="form-group">
-          <div class="row">
-            <label class="control-label">任务id</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                id="task_id"
-                name="task_id"
-                placeholder="请输入"
-              />
-            </div>
-          </div> 
-        </div>
-      </div>  
-
-
-      <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px;">
-        <div class="form-group">
-          <div class="row">
-            <label class="control-label">任务名称</label>
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                id="task_name"
-                name="task_name"
-                placeholder="请输入"
-              />
-            </div>
-          </div> 
-        </div>
-      </div>
-
-      <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 40px;">
-        <label class="control-label">状态</label>
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            选择
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
-            <!-- 需要传入数据库场景列表 -->
-            <li><a href="#">全部</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">未开始</a></li>
-            <li><a href="#">检测中</a></li>
-            <li><a href="#">评审通过</a></li>
-            <li><a href="#">评审驳回</a></li>
-            <li><a href="#">复核通过</a></li>
-            <li><a href="#">复核驳回</a></li>
-            <li><a href="#">已完成</a></li>
-          </ul>
-        </div>
-      </div> 
-
-      <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px;">
-        <div class="form-group">
-          <label>开始时间</label>
-          <!--指定 date标记-->
-          <div class='input-group date' id='datetimepicker1'>
-            <input type='text' class="form-control" />
-            <span class="input-group-addon">
-              <span class="glyphicon glyphicon-calendar"></span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-    </div> 
+  <div class="welcome-container">
+    <div class="welcome-message">欢迎来到医学信息安全评价</div>
+  </div>
 {% endblock %} 
 
 {% block script %}

@@ -202,6 +202,17 @@
 				});
 			});
 
+      // 在父级页面的JavaScript中
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'change_add_URL') {
+            // 修改父级页面的URL
+            window.location.href = event.data.newURL;
+        }
+        if (event.data && event.data.type === 'change_center_URL') {
+          // 修改父级页面的URL
+          window.location.href = event.data.newURL;
+      }
+      }, false);
       {% block script %}
       {% endblock %}
 		</script>

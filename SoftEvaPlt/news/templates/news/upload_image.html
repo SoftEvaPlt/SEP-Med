@@ -20,20 +20,40 @@
 
   </head>
 
-  <body>
-    <form method="post" action="/upload_image/" enctype="multipart/form-data">
-        {% csrf_token %}
-        <!-- 其他表单字段... -->
-        <p>选择图片：<input type="file" name="pic"></p>
-        <p><input type="submit" value="上传头像"></p>
-    </form>
-    
-
-
-
+    <body class="bg-light">
+      <div class="container mt-5">
+        <div class="row">
+            <div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                <form method="post" action="/upload_image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="td_image">选择产品拓扑图：</label>
+                        <input type="file" class="form-control-file" name="td_image" id="td_image">
+                    </div>
+                    <div class="form-group">
+                        <label for="ad_image">选择产品架构图：</label>
+                        <input type="file" class="form-control-file" name="ad_image" id="ad_image">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" onclick="change_center_URL()">上传图片并保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- New row for buttons -->
+        <div class="row mt-3">
+            <div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
+                <button type="button" class="btn btn-secondary" onclick="change_center_URL()">跳过上传图片并保存</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-     
+      // 在iframe内的JavaScript中
+      function change_center_URL(newURL) {
+        // 请求父级页面修改URL
+        window.parent.postMessage({ type: 'change_center_URL', newURL: '/home/task_center/1/' }, '*');
+      }
     </script>
   </body>
 </html>

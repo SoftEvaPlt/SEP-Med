@@ -126,7 +126,7 @@
 
     <div class="container-fluid">
         <div style="margin-bottom: 10px">
-            <a class="btn btn-success" href="/task_add/">
+            <a class="btn btn-success" onclick="change_add_URL()">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                 创建任务
             </a>
@@ -165,7 +165,7 @@
                             {% endif %}
                             {% if task.task_state.task_state_name  == '未开始' %}
                               <a class="btn btn-primary btn-xs">派发</a>
-                              <a class="btn btn-primary btn-xs">删除</a>
+                              <a class="btn btn-primary btn-xs" href="/task_del/?task_id={{ task.task_id }}">删除</a>
                             {% endif %}
                             {% if task.task_state.task_state_name  == '评审通过' %}
                               <a class="btn btn-primary btn-xs">复核</a>
@@ -190,7 +190,8 @@
           height: 40px;
           width: 100%;
           text-align: center;">
-        <li><a href="/task_center/{{ last_page }}/" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+        <li><a href="/task_center/{{ first_page }}/" aria-label="First"><span aria-hidden="true">««</span></a></li>
+        <li><a href="/task_center/{{ previous_page }}/" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
         {% for this_page in pre_list %}
           <li><a href="/task_center/{{ this_page }}/">{{ this_page }}</a></li>
         {% endfor %}
@@ -199,6 +200,8 @@
           <li><a href="/task_center/{{ this_page }}/">{{ this_page }}</a></li>
         {% endfor %}
         <li><a href="/task_center/{{ next_page }}/" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+        <li><a href="/task_center/{{ last_page }}/" aria-label="Last"><span aria-hidden="true">»»</span></a></li>
+        
       </ul>
     </div> 
     
@@ -237,6 +240,11 @@
           $('#dropdownMenu-value').val(selectedOption);
         });
       });
+      // 在iframe内的JavaScript中
+      function change_add_URL(newURL) {
+        // 请求父级页面修改URL
+        window.parent.postMessage({ type: 'change_add_URL', newURL: '/home/task_add/' }, '*');
+      }
     </script>
   </body>
 </html>
