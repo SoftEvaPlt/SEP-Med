@@ -108,14 +108,15 @@
   <div class="container-fluid">
     <div class="container">
       <div class="row">
-        <form method="post" action="/task_center/">
+        <form method="post" action="#">
           {% csrf_token %}
+          <input type="hidden" name="action" value="search">
           <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 15px;">
             <div class="form-group">
               <div class="row">
                 <label class="control-label">指标类别</label>
                 <div class="input-group">
-                  <input type="text" maxlength="8" class="form-control" id="task_id" name="task_id" placeholder="请输入" />
+                  <input type="text" maxlength="30" class="form-control" name="category" placeholder="请输入类别" />
                 </div>
               </div>
             </div>
@@ -127,8 +128,7 @@
               <div class="row">
                 <label class="control-label">指标名称</label>
                 <div class="input-group">
-                  <input type="text" maxlength="30" class="form-control" id="task_name" name="task_name"
-                    placeholder="请输入" />
+                  <input type="text" maxlength="30" class="form-control" name="name" placeholder="请输入名称" />
                 </div>
               </div>
             </div>
@@ -139,8 +139,7 @@
               <div class="row">
                 <label class="control-label">创建者</label>
                 <div class="input-group">
-                  <input type="text" maxlength="30" class="form-control" id="task_name" name="task_name"
-                    placeholder="请输入" />
+                  <input type="text" maxlength="30" class="form-control" name="creator" placeholder="请输入创建者" />
                 </div>
               </div>
             </div>
@@ -149,19 +148,16 @@
           <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 40px; margin-left: 5px;">
             <label class="control-label">状态</label>
             <div class="dropdown">
-              <input type="hidden" id='dropdownMenu-value' name="dropdownMenu-value" value=全部>
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+              <input type="hidden" id='dropdownMenu-value1' name="state" value=全部>
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownButton1" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">
                 按状态查找
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
-                <!-- 需要传入数据库场景列表 -->
+              <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownButton1" id="dropdownMenu1">
                 <li><a href="#">全部</a></li>
-                <li role="separator" class="divider"></li>
-                {% for task_state in task_state_data %}
-                <li><a href="#">{{ task_state.task_state_name }}</a></li>
-                {% endfor %}
+                <li><a href="#">已启用</a></li>
+                <li><a href="#">已禁用</a></li>
               </ul>
             </div>
           </div>
@@ -169,49 +165,24 @@
           <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 40px; margin-left: 30px;">
             <label class="control-label">时间</label>
             <div class="dropdown">
-              <input type="hidden" id='dropdownMenu-value' name="dropdownMenu-value" value=今天>
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+              <input type="hidden" id='dropdownMenu-value2' name="time" value=全部>
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownButton2" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">
                 按时间查找
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
-                <!-- 需要传入数据库场景列表 -->
+              <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownButton2" id="dropdownMenu2">
                 <li><a href="#">全部</a></li>
-                <li role="separator" class="divider"></li>
-                {% for task_state in task_state_data %}
-                <li><a href="#">{{ task_state.task_state_name }}</a></li>
-                {% endfor %}
+                <li><a href="#">近一天</a></li>
+                <li><a href="#">近一周</a></li>
+                <li><a href="#">近一月</a></li>
+                <li><a href="#">近一年</a></li>
               </ul>
             </div>
           </div>
 
-          <!-- <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px;">
-            <div class="form-group">
-              <label>开始时间</label>
-              <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" id="start_time" name="start_time" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px;">
-            <div class="form-group">
-              <label>结束时间</label>
-              <div class='input-group date' id='datetimepicker2'>
-                <input type='text' class="form-control" id="end_time" name="end_time" />
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-          </div> -->
-
           <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 64px; margin-left: 30px;">
-            <button type="reset" class="btn btn-default btn-block">
+            <button type="reset,submit" class="btn btn-default btn-block">
               重置
             </button>
           </div>
@@ -222,41 +193,32 @@
             </button>
           </div>
 
-
         </form>
       </div>
 
 
       <script>
-        // $(function () {
-        //   var picker1 = $('#datetimepicker1').datetimepicker({
-        //     format: 'YYYY-MM-DD',
-        //     locale: moment.locale('zh-cn'),
-        //     //minDate: '2016-7-1'
-        //   });
-        //   var picker2 = $('#datetimepicker2').datetimepicker({
-        //     format: 'YYYY-MM-DD',
-        //     locale: moment.locale('zh-cn')
-        //   });
-        //   //动态设置最小值
-        //   picker1.on('dp.change', function (e) {
-        //     picker2.data('DateTimePicker').minDate(e.date);
-        //   });
-        //   //动态设置最大值
-        //   picker2.on('dp.change', function (e) {
-        //     picker1.data('DateTimePicker').maxDate(e.date);
-        //   });
-        // });
-
         $(document).ready(function () {
           // 监听下拉菜单中的选项点击事件
-          $('.dropdown-menu a').on('click', function () {
+          $('#dropdownMenu1 a').on('click', function () {
             // 获取被点击的选项文本
             var selectedOption = $(this).text();
             // 设置下拉菜单按钮上显示的文本为选中的选项文本
-            $('#dropdownMenu1').html(selectedOption + ' <span class="caret"></span>');
+            $('#dropdownButton1').html(selectedOption + ' <span class="caret"></span>');
             //设置input中的value
-            $('#dropdownMenu-value').val(selectedOption);
+            $('#dropdownMenu-value1').val(selectedOption);
+          });
+        });
+
+        $(document).ready(function () {
+          // 监听下拉菜单中的选项点击事件
+          $('#dropdownMenu2 a').on('click', function () {
+            // 获取被点击的选项文本
+            var selectedOption = $(this).text();
+            // 设置下拉菜单按钮上显示的文本为选中的选项文本
+            $('#dropdownButton2').html(selectedOption + ' <span class="caret"></span>');
+            //设置input中的value
+            $('#dropdownMenu-value2').val(selectedOption);
           });
         });
       </script>
@@ -309,13 +271,13 @@
               <td>
                 <div class="container-fluid">
 
-                  <form method="post" action="/admin/indicators">
+                  <form method="post" action="#">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="enable">
                     <input type="hidden" name="id" value="{{ si.si_id }}">
                     <input class="btn btn-primary btn-xs" type="submit" value="启用" />
                   </form>
-                  <form method="post" action="/admin/indicators">
+                  <form method="post" action="#">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="disable">
                     <input type="hidden" name="id" value="{{ si.si_id }}">
@@ -341,7 +303,7 @@
                           确认删除吗？
                         </div>
                         <div class="modal-footer">
-                          <form method="post" action="/admin/indicators">
+                          <form method="post" action="#">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="{{ si.si_id }}">
