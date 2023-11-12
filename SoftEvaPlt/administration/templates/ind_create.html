@@ -109,30 +109,91 @@
 
 
 
-    <!-- <div>
-        <form method="post"  action="/admin/indicators">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="create">
-            <label>类别</label>
-            {{ form.si_category }}
-            <label>名称</label>
-            {{ form.si_name }}
-            <input type="submit" value="创建！"/>
-        </form> -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-sm-10 col-xs-10" style="margin-top: 20px;">
+                <h4><strong>安全指标信息</strong></h4>
+            </div>
+
+            <form method="post" action="/admin/indicators">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <div class="col-md-8 col-sm-8 col-xs-8">
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <div class="text-group">
+                                <label class="control-label">*指标类别</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div style="position:absolute;right:20px;top:6px;cursor:pointer;display:none;"
+                                class="input_clear">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    ×
+                                </button>
+                            </div>
+                            <input type="text" maxlength="30" class="form-control" name="category" placeholder="请输入指标类别"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <div class="text-group">
+                                <label class="control-label">*指标名称</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                            <div style="position:absolute;right:20px;top:6px;cursor:pointer;display:none;"
+                                class="input_clear">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    ×
+                                </button>
+                            </div>
+                            <input type="text" maxlength="30" class="form-control" name="name" placeholder="请输入指标名称"
+                                required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                        <div class="row" style="margin-top: 40px">
+                            <button onclick="window.history.go(-1)" class="btn btn-default btn-block">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                        <div class="row" style="margin-top: 40px">
+                            <button type="submit" class="btn btn-primary btn-block" name="submit_all">
+                                确定
+                            </button>
+                        </div>
+                    </div>
+            </form>
 
 
-        <form method="post" action="/admin/indicators">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="create">
-            <label>类别</label>
-                <input type="text" class="form-control&quot" name="category" placeholder="请输入指标类别"
-                    required />
-            <label>名称</label>
-                <input type="text" class=form-control&quot" name="name" placeholder="请输入指标名称"
-                    required />
-            <input type="submit" value="创建！"/>
-        </form>
+            <script>
+                $("input").focus(function () {
+                    $(this).parent().children(".input_clear").show();
 
+                });
+
+                $("input").blur(function () {
+                    if ($(this).val() == '') {
+                        $(this).parent().children(".input_clear").hide();
+                    }
+                });
+
+                $(".input_clear").click(function () {
+                    $(this).parent().find('input').val('');
+                    $(this).hide();
+                }); 
+            </script>
+
+        </div>
     </div>
 
 </body>

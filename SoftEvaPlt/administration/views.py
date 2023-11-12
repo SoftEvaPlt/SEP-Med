@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db.models import Max
 from .models import SafetyIndicator, Scene
 from datetime import datetime
+import math
 
 
 # Create your views here.
@@ -9,14 +10,13 @@ def admin_view(request):
     return render(request, 'admin.html')
 
 def indicators_view(request):
-    all_si = SafetyIndicator.objects.all()
     if request.method == 'POST':
 
         if request.POST.get('action') == 'create':
             if len(SafetyIndicator.objects.all()) == 0:
                 id = 1
             else:
-                id = SafetyIndicator.objects.aggregate(Max('scene_id'))['scene_id__max'] + 1
+                id = SafetyIndicator.objects.aggregate(Max('si_id'))['si_id__max'] + 1
             SafetyIndicator.objects.create(si_id = id,
                                             si_category = request.POST.get('category'),
                                             si_name = request.POST.get('name'),
@@ -26,7 +26,8 @@ def indicators_view(request):
             
         if request.POST.get('action') == 'delete':
             if len(SafetyIndicator.objects.all()) == 1 & len(Scene.objects.all()) > 0:
-                return render(request, 'indicators.html', {'si_queryset': all_si, 'delete_failed':'True'})
+                return render(request, 'indicators.html', {'si_queryset': SafetyIndicator.objects.all(),
+                                                            'delete_failed':'True'})
             SafetyIndicator.objects.filter(si_id = request.POST.get('id')).delete()
 
         if request.POST.get('action') == 'update':
@@ -44,13 +45,35 @@ def indicators_view(request):
                 si_state = 0
             )
 
-    return render(request, 'indicators.html', {'si_queryset': all_si, 'delete_failed':'False'})
+    page_len = 4 #页长
+    all_si = SafetyIndicator.objects.all()
+    total = all_si.count()
+    page = request.GET.get('page')
+    if page == None:
+        page = 1
+    else:
+        page = int(page)
+    all_si =  all_si[(page - 1) * page_len : page * page_len] #将指定页码所包含的条目分出来
+
+    pre,next = 2,2
+    page_max = math.ceil(total / page_len)
+    last_page = page - 1
+    next_page = page + 1
+    if(last_page == 0):
+        last_page = None
+    if(next_page == page_max + 1):
+        next_page = None
+    pages = range(max(page - pre, 1),min(page + next, page_max) + 1)
+
+    return render(request, 'indicators.html', {'si_queryset': all_si, 
+                                               'delete_failed':'False',
+                                               "pages":pages,
+                                               "last_page": last_page,
+                                               "now_page": page,
+                                               "next_page": next_page})
 
 def ind_create(request):
     return render(request, "ind_create.html")
-    # if request.method == "GET":
-    #     form = IndicatorForm()
-    #     return render(request, "ind_create.html", {"form": form})
     
 def ind_update(request):
     if request.method == "GET":
@@ -107,3 +130,7 @@ def sce_update(request):
         return render(request, "sce_update.html", {"scene_id": sc[0].scene_id, 
                                                    "scene_name": sc[0].scene_name, 
                                                    "scene_description": sc[0].scene_description})
+    
+
+def test(request):
+    return render(request, 'test.html')

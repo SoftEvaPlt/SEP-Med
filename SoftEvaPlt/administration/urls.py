@@ -11,4 +11,5 @@ urlpatterns = [
     path('admin/scenes', views.scenes_view),
     path('admin/sce_create', views.sce_create),
     path('admin/sce_update', views.sce_update),
+    path('test', views.test)
 ]
