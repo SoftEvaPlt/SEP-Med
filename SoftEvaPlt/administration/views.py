@@ -99,7 +99,9 @@ def indicators_view(request):
         next_page = None
     pages = range(max(page - pre, 1),min(page + next, page_max) + 1)
 
-
+    for p in pages:
+        print(p)
+    print(page)
     return render(request, 'indicators.html', {'si_queryset': all_si, 
                                                'delete_failed':'False',
                                                "pages":pages,
