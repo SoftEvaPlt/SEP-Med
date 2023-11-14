@@ -117,7 +117,7 @@
       
       <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 64px;">
         <button type="reset" class="btn btn-default btn-block">
-          <a href="/task_center/1/">
+          <a href={% url 'reset_task_center' %}>
           重置
         </button>
       </div> 
@@ -165,7 +165,7 @@
                             {% endif %}
                             {% if task.task_state.task_state_name  == '未开始' %}
                               <a class="btn btn-primary btn-xs">派发</a>
-                              <a class="btn btn-primary btn-xs" href="/task_del/?task_id={{ task.task_id }}">删除</a>
+                              <a class="btn btn-danger btn-xs" href="/task_del/?task_id={{ task.task_id }}">删除</a>
                             {% endif %}
                             {% if task.task_state.task_state_name  == '评审通过' %}
                               <a class="btn btn-primary btn-xs">复核</a>

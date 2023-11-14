@@ -87,17 +87,14 @@
               </div>
               <div class="col-md-4 col-sm-4 col-xs-4">
                 <div class="dropdown">
-                  <input type="hidden" id='dropdownMenu2-value' name="dropdownMenu2-value" value="{{ display_si.si_category }}"> 
-                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ display_si.si_category }}<span class="caret"></span>
+                  <input type="hidden" id='dropdownMenu2-value' name="dropdownMenu2-value" value="{{ display_si.si_name }}"> 
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{ display_si.si_name }}<span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu2">
                     <!-- 需要传入数据库场景列表 -->
-                    {% for si_category in si_category_data %}
-                      {% if si_category.si_state == 1 %}
-                        {% comment %} <a class="dropdown-items"> {% endcomment %}
-                          {% comment %} <input type="checkbox"> {{ si_category.si_category }} {% endcomment %}
-                        {% comment %} </a> {% endcomment %}
-                        <li><a href="#">{{ si_category.si_category }}</a></li>
+                    {% for si in si_data %}
+                      {% if si.si_state == 1 %}
+                        <li><a href="#">{{ si.si_name }}</a></li>
                       {% endif %}
                     {% endfor %}
                   </ul>

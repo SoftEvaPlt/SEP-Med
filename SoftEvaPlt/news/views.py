@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-# from django.contrib.auth import login
+from django.core.cache import cache
 from .models import TaskSi, User  # 导入自定义用户模型
 from .models import Task
 from .models import Scene
@@ -75,6 +75,13 @@ def task_center(request, page):
     all_task_state_data = TaskStateTable.objects.all()
     search_data = {}
     search_data["task_state"] = "全部"
+    # Initialize variables
+    pre_list = []
+    next_list = []
+    previous_page = None
+    next_page = None
+    page_num = None
+
     if request.method =='POST':
         search_filter = {}
         search_data = {}
@@ -109,7 +116,18 @@ def task_center(request, page):
             search_data["end_time"] = end_time
         all_task_data = Task.objects.filter(**search_filter).order_by('task_id')
         print(state_selection_num)
-    
+        # 将结果存储到缓存，过期时间可以根据实际情况调整
+        cache.set('task_center_data', (all_task_data, all_task_state_data, search_data, pre_list, next_list, previous_page, next_page, page_num), timeout=300)
+        # 搜索后默认跳转到第一页
+        page = 1
+
+    # 检查是否有缓存数据
+    cached_data = cache.get('task_center_data')
+
+    if cached_data:
+        # 如果有缓存数据，直接使用缓存数据
+        all_task_data, all_task_state_data, search_data, pre_list, next_list, previous_page, next_page, page_num = cached_data
+        
     for task in all_task_data:
         task.task_create_time = task.task_create_time.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -149,12 +167,11 @@ def task_center(request, page):
     else:
         previous_page = page - 1
         next_page = page + 1
-    last_page = page_num
 
     print(page)
     print(previous_page)
     print(next_page)
-    
+
     return render(request, 'news/task_center.html', 
                   {"task_data": all_task_data, 
                    "task_state_data": all_task_state_data, 
@@ -165,7 +182,7 @@ def task_center(request, page):
                    "now_page": page,
                    "next_page": next_page,
                    "first_page": 1,
-                   "last_page": last_page})
+                   "last_page": page_num})
 
 def home_task_center(request, page):
     # 获取传来的page
@@ -258,7 +275,7 @@ def task_add(request):
                 for si in si_category_list:
                     new_task_si_list.append(TaskSi(
                         task=Task.objects.latest('task_id'),    # 获得最大的id
-                        si=SafetyIndicator.objects.filter(si_category=si).first()))
+                        si=SafetyIndicator.objects.filter(si_name=si).first()))
                 # 一次插入多条记录
                 TaskSi.objects.bulk_create(new_task_si_list)
 
@@ -286,13 +303,21 @@ def task_add(request):
                         "product_error_message": product_error_message
                     })
 
-    return render(request, 'news/task_add.html', {"scene_name_data": all_scene_data, "si_category_data": all_si_data, "display_si": display_si})
+    return render(request, 'news/task_add.html', {"scene_name_data": all_scene_data, "si_data": all_si_data, "display_si": display_si})
 
 def home_task_add(request):
+    cache.clear()
     return render(request, 'news/home_task_add.html')
 
 def task_del(request):
+    cache.clear()
     task_id = request.GET.get('task_id')
+    product_td = str(Task.objects.get(task_id=task_id).product_td)
+    product_ad = str(Task.objects.get(task_id=task_id).product_ad)
+    if product_td != "":
+        os.remove(product_td)
+    if product_ad != "":
+        os.remove(product_ad)
     Task.objects.filter(task_id=task_id).delete()
     TaskStateTable.objects.filter(task=task_id).delete()
     return redirect('/task_center/1/')
@@ -306,6 +331,12 @@ def upload_image(request):
         if 'td_image' in request.FILES:
             # 获取一个文件管理器对象
             td_file = request.FILES['td_image']
+            print("有td")
+            # 检查文件类型
+            if not td_file.name.lower().endswith(('.jpg', '.png')):
+                td_error_message = "请选择正确格式的文件"
+                return render(request, 'news/upload_image.html', {'td_error_message': td_error_message})
+
             # 保存文件
             td_file_name = task_id + 'product_TD' + os.path.splitext(td_file.name)[1]
             # 将要保存的地址和文件名称
@@ -319,6 +350,12 @@ def upload_image(request):
         if 'ad_image' in request.FILES:            
             # 获取一个文件管理器对象
             ad_file = request.FILES['ad_image']
+            print("有ad")
+            # 检查文件类型
+            if not ad_file.name.lower().endswith(('.jpg', '.png')):
+                ad_error_message = "请选择正确格式的文件"
+                return render(request, 'news/upload_image.html', {'ad_error_message': ad_error_message})
+
             # 保存文件
             ad_file_name = task_id + 'product_AD' + os.path.splitext(ad_file.name)[1]
             # 将要保存的地址和文件名称
@@ -340,3 +377,9 @@ def upload_image_page(request):
 
 def home_upload_image_page(request):
     return render(request, 'news/home_upload_image.html')
+
+def reset_task_center(request):
+    # 清除缓存
+    cache.clear()
+    print("nihao!!!!!!")
+    return redirect('/task_center/1/')
