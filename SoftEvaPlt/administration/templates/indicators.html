@@ -318,7 +318,7 @@
             {% endif %}
             {% for p in pages %}
             {% if p != now_page %}
-            <li><a href="indicators?page={{ p }}" onclick="store_page({{ p }})">{{ p }}</a></li>
+            <li><a href="indicators?page={{ p }}">{{ p }}</a></li>
             {% endif %}
             {% if p == now_page %}
             <li class="active"><a href="#">{{ p }}</a></li>
@@ -329,11 +329,6 @@
             </li>
             {% endif %}
           </ul>
-          <script>
-            function store_page(page){
-              window.sessionStorage.setItem('page',page);
-            }
-          </script>
         </form>
       </div>
 

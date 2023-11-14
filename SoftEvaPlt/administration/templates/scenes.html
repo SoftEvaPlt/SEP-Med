@@ -110,7 +110,7 @@
     <div class="container-fluid">
         <div class="container">
             <div class="row">
-                <form method="post" action="#">
+                <form method="post" action="scenes">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="search">
                     <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 15px;">
@@ -266,36 +266,25 @@
                         {% for sc in sc_queryset %}
                         <tr>
                             <td id="num{{ forloop.counter }}"></td> <!-- 每行都有不同id -->
-                            <script>$("#num{{ forloop.counter }}").html(({{ now_page }} - 1) * 4 + {{ forloop.counter }});</script>
+                            <script>$("#num{{ forloop.counter }}").html(({{ now_page }} - 1) * 9 + {{ forloop.counter }});</script>
                             <td>{{ sc.scene_name }}</td>
                             <td>{{ sc.scene_state }}</td>
                             <td style="text-overflow:ellipsis;">{{ sc.scene_description }}</td>
                             <td>{{ sc.scene_creator }}</td>
                             <td>{{ sc.scene_create_time }}</td>
                             <td>
-                                <form method="post" action="#">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="action" value="enable">
-                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                    <input class="btn btn-primary btn-xs" type="submit" value="启用" />
-                                </form>
+                            <td>
+                                <a class="btn btn-primary btn-xs" href="sce_enable?id={{ sc.scene_id }}">启用</a>
 
-                                <form method="post" action="#">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="action" value="disable">
-                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                    <input class="btn btn-primary btn-xs" type="submit" value="禁用" />
-                                </form>
+                                <a class="btn btn-primary btn-xs" href="sce_disable?id={{ sc.scene_id }}">禁用</a>
 
                                 <a class="btn btn-primary btn-xs" href="sce_update?id={{ sc.scene_id }}">编辑</a>
 
-                                <div>
-                                    <a class="btn btn-danger btn-xs" href="#" data-toggle="modal"
-                                        data-target="#confirmModal">删除</a>
-                                </div>
+                                <a class="btn btn-danger btn-xs" href="#" data-toggle="modal"
+                                    data-target="#confirmModal{{ forloop.counter }}">删除</a>
 
-                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="confirmModal{{ forloop.counter }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -309,18 +298,15 @@
                                                 确认删除吗？
                                             </div>
                                             <div class="modal-footer">
-                                                <form method="post" action="#">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                                    <input type="submit" class="btn btn-sm btn-danger" value="删除">
-                                                </form>
-                                                <button type="button" class="btn btn-sm btn-primary"
+                                                <a class="btn btn-danger btn-xs"
+                                                    href="sce_delete?id={{ sc.scene_id }}">删除</a>
+                                                <button type="button" class="btn btn-xs btn-primary"
                                                     data-dismiss="modal">取消</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                </ol>
                             </td>
                         </tr>
                         {% endfor %}
@@ -330,29 +316,31 @@
 
             <div class="col-md-4 col-sm-4 col-xs-4 col-md-offset-8" style="margin-top: 64px;">
                 <form>
-                  <ul class="pagination" style="position: fixed;
+                    <ul class="pagination" style="position: fixed;
                                               bottom: 0;
                                               height: 40px;
                                               width: 100%;
                                               text-align: center;">
-                    {% if last_page != none %}
-                    <li><a href="scenes?page={{ last_page }}" id="Last"><span aria-hidden="true">&laquo;</span></a></li>
-                    {% endif %}
-                    {% for p in pages %}
-                    {% if p != now_page %}
-                    <li><a href="scenes?page={{ p }}">{{ p }}</a></li>
-                    {% endif %}
-                    {% if p == now_page %}
-                    <li class="active"><a href="#">{{ p }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                    {% if next_page != none %}
-                    <li><a href="scenes?page={{ next_page }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-                    </li>
-                    {% endif %}
-                  </ul>
+                        {% if last_page != none %}
+                        <li><a href="scenes?page={{ last_page }}" id="Last"><span aria-hidden="true">&laquo;</span></a>
+                        </li>
+                        {% endif %}
+                        {% for p in pages %}
+                        {% if p != now_page %}
+                        <li><a href="scenes?page={{ p }}">{{ p }}</a></li>
+                        {% endif %}
+                        {% if p == now_page %}
+                        <li class="active"><a href="#">{{ p }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if next_page != none %}
+                        <li><a href="scenes?page={{ next_page }}" aria-label="Next"><span
+                                    aria-hidden="true">&raquo;</span></a>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </form>
-              </div>
+            </div>
 
         </div>
     </div>
