@@ -113,7 +113,7 @@
   <div class="container-fluid">
     <div class="container">
       <div class="row">
-        <form method="post" action="#">
+        <form method="post" action="indicators">
           {% csrf_token %}
           <input type="hidden" name="action" value="search">
           <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 15px;">
@@ -263,33 +263,22 @@
             {% for si in si_queryset %}
             <tr>
               <td id="num{{ forloop.counter }}"></td> <!-- 每行都有不同id -->
-              <script>$("#num{{ forloop.counter }}").html(({{ now_page }} - 1) * 4 + {{ forloop.counter }});</script>
+              <script>$("#num{{ forloop.counter }}").html(({{ now_page }} - 1) * 9 + {{ forloop.counter }});</script>
               <td>{{ si.si_category }}</td>
               <td>{{ si.si_name }}</td>
               <td>{{ si.si_state }}</td>
               <td>{{ si.si_creator }}</td>
               <td>{{ si.si_create_time }}</td>
               <td>
-                <form method="post" action="#" style="width: auto;">
-                  {% csrf_token %}
-                  <input type="hidden" name="action" value="enable">
-                  <input type="hidden" name="id" value="{{ si.si_id }}">
-                  <input class="btn btn-primary btn-xs" type="submit" value="启用" />
-                </form>
+                <a class="btn btn-primary btn-xs" href="ind_enable?id={{ si.si_id }}">启用</a>
 
-                <form method="post" action="#" style="width: auto;">
-                  {% csrf_token %}
-                  <input type="hidden" name="action" value="disable">
-                  <input type="hidden" name="id" value="{{ si.si_id }}">
-                  <input class="btn btn-primary btn-xs" type="submit" value="禁用" />
-                </form>
+                <a class="btn btn-primary btn-xs" href="ind_disable?id={{ si.si_id }}">禁用</a>
 
                 <a class="btn btn-primary btn-xs" href="ind_update?id={{ si.si_id }}">编辑</a>
 
-                <a class="btn btn-danger btn-xs" href="#" data-toggle="modal" data-target="#confirmModal">删除</a>
+                <a class="btn btn-danger btn-xs" href="#" data-toggle="modal" data-target="#confirmModal{{ forloop.counter }}">删除</a>
 
-
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                <div class="modal fade" id="confirmModal{{ forloop.counter }}" tabindex="-1" role="dialog"
                   aria-labelledby="confirmModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -303,13 +292,8 @@
                         确认删除吗？
                       </div>
                       <div class="modal-footer">
-                        <form method="post" action="#">
-                          {% csrf_token %}
-                          <input type="hidden" name="action" value="delete">
-                          <input type="hidden" name="id" value="{{ si.si_id }}">
-                          <input type="submit" class="btn btn-sm btn-danger" value="删除">
-                        </form>
-                        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">取消</button>
+                        <a class="btn btn-danger btn-xs" href="ind_delete?id={{ si.si_id }}">删除</a>
+                        <button type="button" class="btn btn-xs btn-primary" data-dismiss="modal">取消</button>
                       </div>
                     </div>
                   </div>
@@ -334,7 +318,7 @@
             {% endif %}
             {% for p in pages %}
             {% if p != now_page %}
-            <li><a href="indicators?page={{ p }}">{{ p }}</a></li>
+            <li><a href="indicators?page={{ p }}" onclick="store_page({{ p }})">{{ p }}</a></li>
             {% endif %}
             {% if p == now_page %}
             <li class="active"><a href="#">{{ p }}</a></li>
@@ -345,6 +329,11 @@
             </li>
             {% endif %}
           </ul>
+          <script>
+            function store_page(page){
+              window.sessionStorage.setItem('page',page);
+            }
+          </script>
         </form>
       </div>
 
