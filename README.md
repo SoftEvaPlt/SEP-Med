@@ -9,6 +9,12 @@
   - ```conda activate dj_py311```
 - 安装 Django
   - ```python -m pip install Django```
+- 安装 pandas
+- 安装 numpy
+- 安装jinja2
+- 安装bs4
+ - ```pip install pandas numpy jinja2 beautifulsoup4
+```
 
 ## 本地部署 ```MySQL``` 数据库
   - 依赖 docker 与 docker-compose
