@@ -24,7 +24,7 @@ def login_view(request):
                 # 登录用户
                 # login(request, user) TODO'缺少last_login的字段，看后续是否要记录用户的登录状态'
                 # 登录成功后的逻辑，例如重定向到特定页面
-                return redirect('users:home')
+                return redirect('/home/task_center/1/')
             else:
                 # 登录失败的逻辑，例如错误提示
                 error_message = "用户名或密码不正确"
@@ -40,6 +40,7 @@ def register_view(request):
             user_account = form.cleaned_data['user_account']
             user_password = form.cleaned_data['user_password']
             confirm_password = form.cleaned_data['confirm_password']
+            user_name = form.cleaned_data['user_name']
             # 检查用户两次输入的密码是否一致 TODO 不知道为什么这个判断不能成功回显在前端
             # if confirm_password != user_password:
             #     error_message = "两次输入的密码不一致。"
@@ -47,9 +48,13 @@ def register_view(request):
             
             # 检查数据库中是否已存在相同的用户账号
             existing_user = User.objects.filter(user_account=user_account).exists()
+            existing_name = User.objects.filter(user_account=user_name).exists()
             if existing_user:
                 # 如果存在相同账号，显示错误信息
                 error_message = "该账号已经存在，请输入另一个账号。"
+                return render(request, 'users/register.html', {'form': form, 'error_message': error_message})
+            elif existing_name:
+                error_message = "该用户名已经存在，请输入另一个账号。"
                 return render(request, 'users/register.html', {'form': form, 'error_message': error_message})
             else:
                 print(form.cleaned_data)
@@ -68,7 +73,7 @@ def register_view(request):
                 print(user_password)
                 user.save()
                 # 可以添加其他逻辑，比如注册成功后的重定向或信息提示
-                return redirect('users:home')
+                return redirect('/home/task_center/1/')
     else:
         # error_message = "注册错误"
         form = RegistrationForm()
@@ -76,8 +81,6 @@ def register_view(request):
         
     return render(request, 'users/register.html', {'form': form})
 
-def home(request):
-    return render(request, 'users/home.html')
 
 
 # import logging

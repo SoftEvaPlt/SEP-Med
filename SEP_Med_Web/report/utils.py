@@ -107,8 +107,8 @@ def get_data_as_dataframe(task_id):
         # 查询指标的类别
         query = f"""
                     SELECT task_name,scene_name,si_name
-                    FROM task,scene,safety_indicator,task_operation,task_si
-                    WHERE task_operation.task_id = {task_id}
+                    FROM task,scene,safety_indicator,task_si
+                    WHERE task.task_id = {task_id}
                         AND task.scene_id = scene.scene_id
                         AND task_si.task_id = task.task_id
                         AND safety_indicator.si_id = task_si.si_id

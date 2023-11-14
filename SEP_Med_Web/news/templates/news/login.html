@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- 引入 Bootstrap -->
     <link rel="stylesheet" href={% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}>
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
     <style>
       body {
         background-image: url("{% static 'images/background.png' %}");
@@ -39,7 +43,7 @@
               <form method="post" action="/auth/login/">
                 {% csrf_token %}
                 <div class="form-group">
-                  <label for="username">用户名</label>
+                  <label for="user_account">用户账号</label>
                   <div class="input-group">
                     <span class="input-group-addon"
                       ><i class="glyphicon glyphicon-user"></i
@@ -47,9 +51,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="username"
-                      name="username"
-                      placeholder="用户名"
+                      id="user_account"
+                      name="user_account"
+                      placeholder="请输入账号"
                       required
                     />
                   </div>
@@ -65,7 +69,7 @@
                       class="form-control"
                       id="password"
                       name="password"
-                      placeholder="密码"
+                      placeholder="请输入密码"
                       required
                     />
                   </div>
@@ -81,15 +85,12 @@
               {% endif %}
             </div>
             <div class="panel-footer text-center">
-              <p>还没有账户？<a href="#">注册</a></p>
+              <p>还没有账户？<a href="/auth/logon">注册</a></p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
-    <!-- 包括所有已编译的插件 -->
-    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
   </body>
 </html>

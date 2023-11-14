@@ -1,0 +1,105 @@
+{% extends 'news/home_base.html' %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-sm-10 col-xs-10" style="margin-top: 20px;">
+            <h4><strong>应用场景信息</strong></h4>
+        </div>
+
+        <form method="post" action="#">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ scene_id }}">
+
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <div class="text-group">
+                            <label class="control-label">*场景名称</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <div style="position:absolute;right:20px;top:6px;cursor:pointer;display:none;"
+                            class="input_clear">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                        </div>
+                        <input type="text" maxlength="30" class="form-control" name="name" placeholder="请输入场景名称"
+                            value="{{ scene_name }}" required />
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                        <div class="text-group">
+                            <label class="control-label">*场景描述</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                        <div style="position:absolute;right:20px;top:6px;cursor:pointer;display:none;"
+                            class="textarea_clear">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                        </div>
+                        <textarea rows="5" maxlength="200" class="form-control" name="description"
+                            placeholder="请输入场景描述" required>{{ scene_description }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                    <div class="row" style="margin-top: 40px">
+                        <button onclick="window.history.go(-1)" class="btn btn-default btn-block">
+                            取消
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-3 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+                    <div class="row" style="margin-top: 40px">
+                        <button type="submit" class="btn btn-primary btn-block" name="submit_all">
+                            确定
+                        </button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+$("input").focus(function () {
+    $(this).parent().children(".input_clear").show();
+
+});
+
+$("input").blur(function () {
+    if ($(this).val() == '') {
+        $(this).parent().children(".input_clear").hide();
+    }
+});
+
+$(".input_clear").click(function () {
+    $(this).parent().find('input').val('');
+    $(this).hide();
+}); 
+
+$("textarea").focus(function () {
+    $(this).parent().children(".textarea_clear").show();
+
+});
+
+$("textarea").blur(function () {
+    if ($(this).val() == '') {
+        $(this).parent().children(".textarea_clear").hide();
+    }
+});
+
+$(".textarea_clear").click(function () {
+    $(this).parent().find('textarea').val('');
+    $(this).hide();
+}); 
+{% endblock %}

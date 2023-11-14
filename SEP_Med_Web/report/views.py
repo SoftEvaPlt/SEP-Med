@@ -5,7 +5,8 @@ from django.http import HttpResponse
 # 从数据库中读取数据，并整理
 def create_report_view(request):
     # 从数据库中获取数据，这里函数的参数应该是任务的id，TODO 生成报告时获得任务的ID然后作为这个函数的参数
-    df, creator, created_time = get_data_as_dataframe(1)
+    task_id = request.GET.get('task_id')
+    df, creator, created_time = get_data_as_dataframe(task_id)
     assessment_report = create_pivot(df)
 
     # 创建一个jinja环境env,获取html模板
