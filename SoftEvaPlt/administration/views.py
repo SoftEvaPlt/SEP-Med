@@ -88,7 +88,8 @@ def indicators_view(request):
         page = int(page)
     if creaiton_flag or page > page_max:# 创建新指标后自动跳转最后一页 或搜索后页数变少也跳至最后一页
         page = page_max
-    all_si =  all_si[(page - 1) * page_len : page * page_len] #将指定页码所包含的条目分出来
+    if page != 0:
+        all_si =  all_si[(page - 1) * page_len : page * page_len] #将指定页码所包含的条目分出来
 
     pre,next = 2,2
     last_page = page - 1
@@ -122,8 +123,8 @@ def ind_update(request):
 
 def scenes_view(request):
     all_sc = Scene.objects.all()
+    creaiton_flag = 0
     if request.method == 'POST':
-
         if request.POST.get('action') == 'create':
             if len(SafetyIndicator.objects.all()) == 0:
                 return render(request, 'scenes.html', {'sc_queryset': all_sc, 'create_failed':'True'})
@@ -137,6 +138,7 @@ def scenes_view(request):
                                 scene_description = request.POST.get('description'),
                                 scene_creator = 'admin',
                                 scene_create_time = datetime.now())
+            creaiton_flag = 1
             
         if request.POST.get('action') == 'delete':
             Scene.objects.filter(scene_id = request.POST.get('id')).delete()
@@ -156,7 +158,67 @@ def scenes_view(request):
                 scene_state = 0
             )
 
-    return render(request, 'scenes.html', {'sc_queryset': all_sc, 'create_failed':'False'})
+        #进行操作后更新indicators列表
+        all_sc = Scene.objects.all()
+
+        if request.POST.get('action') == 'search':
+            state = ''
+            if request.POST.get('state') == '已启用':
+                state = '1'
+            if request.POST.get('state') == '已禁用':
+                state = '0'
+            if request.POST.get('time') == "全部":
+                all_sc = Scene.objects.filter(scene_name__contains = request.POST.get('name'),
+                                            scene_description__contains = request.POST.get('description'),
+                                            scene_creator__contains = request.POST.get('creator'),
+                                            scene_state__contains = state)
+            else:
+                time = datetime.now()
+                if request.POST.get('time') == '近一天':
+                    time -= timedelta(days=1)
+                if request.POST.get('time') == '近一周':
+                    time -= timedelta(weeks=1)
+                if request.POST.get('time') == '近一月':
+                    time -= timedelta(days=30)
+                if request.POST.get('time') == '近一年':
+                    time -= timedelta(days=365)
+                all_sc = Scene.objects.filter(scene_name__contains = request.POST.get('name'),
+                                            scene_description__contains = request.POST.get('description'),
+                                            scene_creator__contains = request.POST.get('creator'),
+                                            scene_state__contains = state,
+                                            scene_create_time__gte = time)
+
+    page_len = 4 #页长
+    
+    page_max = math.ceil(all_sc.count() / page_len)
+    page = request.GET.get('page')
+    if page == None:
+        page = 1
+    else:
+        page = int(page)
+    if creaiton_flag or page > page_max:# 创建新指标后自动跳转最后一页 或搜索后页数变少也跳至最后一页
+        page = page_max
+    if page != 0:
+        all_sc =  all_sc[(page - 1) * page_len : page * page_len] #将指定页码所包含的条目分出来
+
+    pre,next = 2,2
+    last_page = page - 1
+    next_page = page + 1
+    if(last_page == 0):
+        last_page = None
+    if(next_page == page_max + 1):
+        next_page = None
+    pages = range(max(page - pre, 1),min(page + next, page_max) + 1)
+
+    for p in pages:
+        print(p)
+    print(page)
+    return render(request, 'scenes.html', {'sc_queryset': all_sc, 
+                                            'create_failed':'False',
+                                            "pages":pages,
+                                            "last_page": last_page,
+                                            "now_page": page,
+                                            "next_page": next_page})
 
 def sce_create(request):
     return render(request, "sce_create.html")

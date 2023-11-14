@@ -107,105 +107,255 @@
 
 
 
-    <div class="container">
-
-        {% if create_failed == 'True' %}
-        <div class="alert alert-warning">
-            <a href="#" class="close" data-dismiss="alert">&times;</a>
-            <strong>警告！</strong>请先创建一个安全指标！
-            <a href="ind_create">点击创建</a>
-        </div>
-        {% endif %}
-
-        <div style="margin-bottom: 10px">
-            <a class="btn btn-success" href="sce_create">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                新建场景
-            </a>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-                场景列表
-            </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>场景编号</th>
-                        <th>场景名称</th>
-                        <th>场景状态</th>
-                        <th>场景描述</th>
-                        <th>创建者</th>
-                        <th>创建时间</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for sc in sc_queryset %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ sc.scene_name }}</td>
-                        <td>{{ sc.scene_state }}</td>
-                        <td>{{ sc.scene_description }}</td>
-                        <td>{{ sc.scene_creator }}</td>
-                        <td>{{ sc.scene_create_time }}</td>
-                        <td>
-                            <form method="post" action="/admin/scenes">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="enable">
-                                <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                <input class="btn btn-primary btn-xs" type="submit" value="启用" />
-                            </form>
-
-                            <form method="post" action="/admin/scenes">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="disable">
-                                <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                <input class="btn btn-primary btn-xs" type="submit" value="禁用" />
-                            </form>
-
-                            <a class="btn btn-primary btn-xs" href="sce_update?id={{ sc.scene_id }}">编辑</a>
-
-                            <div>
-                                <a class="btn btn-danger btn-xs" href="#" data-toggle="modal"
-                                    data-target="#confirmModal">删除</a>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="search">
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 15px;">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label">场景名称</label>
+                                <div class="input-group">
+                                    <input type="text" maxlength="30" class="form-control" name="name"
+                                        placeholder="请输入名称" />
+                                </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmModalLabel">确认</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            确认删除吗？
-                                        </div>
-                                        <div class="modal-footer">
-                                            <form method="post" action="/admin/scenes">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="action" value="delete">
-                                                <input type="hidden" name="id" value="{{ sc.scene_id }}">
-                                                <input type="submit" class="btn btn-sm btn-danger" value="删除">
-                                            </form>
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                data-dismiss="modal">取消</button>
+
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 20px;">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label">场景描述</label>
+                                <div class="input-group">
+                                    <input type="text" maxlength="200" class="form-control" name="description"
+                                        placeholder="请输入描述" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 40px; margin-left: 20px;">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label">创建者</label>
+                                <div class="input-group">
+                                    <input type="text" maxlength="30" class="form-control" name="creator"
+                                        placeholder="请输入创建者" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 40px; margin-left: 5px;">
+                        <label class="control-label">状态</label>
+                        <div class="dropdown">
+                            <input type="hidden" id='dropdownMenu-value1' name="state" value=全部>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownButton1"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                按状态查找
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownButton1"
+                                id="dropdownMenu1">
+                                <li><a href="#">全部</a></li>
+                                <li><a href="#">已启用</a></li>
+                                <li><a href="#">已禁用</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 40px; margin-left: 30px;">
+                        <label class="control-label">时间</label>
+                        <div class="dropdown">
+                            <input type="hidden" id='dropdownMenu-value2' name="time" value=全部>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownButton2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                按时间查找
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownButton2"
+                                id="dropdownMenu2">
+                                <li><a href="#">全部</a></li>
+                                <li><a href="#">近一天</a></li>
+                                <li><a href="#">近一周</a></li>
+                                <li><a href="#">近一月</a></li>
+                                <li><a href="#">近一年</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 64px; margin-left: 30px;">
+                        <button type="reset,submit" class="btn btn-default btn-block">
+                            重置
+                        </button>
+                    </div>
+
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="margin-top: 64px;">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            查询
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+
+            <script>
+                $(document).ready(function () {
+                    // 监听下拉菜单中的选项点击事件
+                    $('#dropdownMenu1 a').on('click', function () {
+                        // 获取被点击的选项文本
+                        var selectedOption = $(this).text();
+                        // 设置下拉菜单按钮上显示的文本为选中的选项文本
+                        $('#dropdownButton1').html(selectedOption + ' <span class="caret"></span>');
+                        //设置input中的value
+                        $('#dropdownMenu-value1').val(selectedOption);
+                    });
+                });
+
+                $(document).ready(function () {
+                    // 监听下拉菜单中的选项点击事件
+                    $('#dropdownMenu2 a').on('click', function () {
+                        // 获取被点击的选项文本
+                        var selectedOption = $(this).text();
+                        // 设置下拉菜单按钮上显示的文本为选中的选项文本
+                        $('#dropdownButton2').html(selectedOption + ' <span class="caret"></span>');
+                        //设置input中的value
+                        $('#dropdownMenu-value2').val(selectedOption);
+                    });
+                });
+            </script>
+
+            {% if create_failed == 'True' %}
+            <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>警告！</strong>请先创建一个安全指标！
+                <a href="ind_create">点击创建</a>
+            </div>
+            {% endif %}
+
+            <div style="margin-bottom: 10px">
+                <a class="btn btn-success" href="sce_create">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    新建场景
+                </a>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+                    场景列表
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>场景编号</th>
+                            <th>场景名称</th>
+                            <th>场景状态</th>
+                            <th>场景描述</th>
+                            <th>创建者</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sc in sc_queryset %}
+                        <tr>
+                            <td id="num{{ forloop.counter }}"></td> <!-- 每行都有不同id -->
+                            <script>$("#num{{ forloop.counter }}").html(({{ now_page }} - 1) * 4 + {{ forloop.counter }});</script>
+                            <td>{{ sc.scene_name }}</td>
+                            <td>{{ sc.scene_state }}</td>
+                            <td style="text-overflow:ellipsis;">{{ sc.scene_description }}</td>
+                            <td>{{ sc.scene_creator }}</td>
+                            <td>{{ sc.scene_create_time }}</td>
+                            <td>
+                                <form method="post" action="#">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="enable">
+                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
+                                    <input class="btn btn-primary btn-xs" type="submit" value="启用" />
+                                </form>
+
+                                <form method="post" action="#">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="disable">
+                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
+                                    <input class="btn btn-primary btn-xs" type="submit" value="禁用" />
+                                </form>
+
+                                <a class="btn btn-primary btn-xs" href="sce_update?id={{ sc.scene_id }}">编辑</a>
+
+                                <div>
+                                    <a class="btn btn-danger btn-xs" href="#" data-toggle="modal"
+                                        data-target="#confirmModal">删除</a>
+                                </div>
+
+                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">确认</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                确认删除吗？
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form method="post" action="#">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="action" value="delete">
+                                                    <input type="hidden" name="id" value="{{ sc.scene_id }}">
+                                                    <input type="submit" class="btn btn-sm btn-danger" value="删除">
+                                                </form>
+                                                <button type="button" class="btn btn-sm btn-primary"
+                                                    data-dismiss="modal">取消</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-                        </td>
-                    </tr>
+            <div class="col-md-4 col-sm-4 col-xs-4 col-md-offset-8" style="margin-top: 64px;">
+                <form>
+                  <ul class="pagination" style="position: fixed;
+                                              bottom: 0;
+                                              height: 40px;
+                                              width: 100%;
+                                              text-align: center;">
+                    {% if last_page != none %}
+                    <li><a href="scenes?page={{ last_page }}" id="Last"><span aria-hidden="true">&laquo;</span></a></li>
+                    {% endif %}
+                    {% for p in pages %}
+                    {% if p != now_page %}
+                    <li><a href="scenes?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                    {% if p == now_page %}
+                    <li class="active"><a href="#">{{ p }}</a></li>
+                    {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
+                    {% if next_page != none %}
+                    <li><a href="scenes?page={{ next_page }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                </form>
+              </div>
+
         </div>
     </div>
-
 
 
 </body>
