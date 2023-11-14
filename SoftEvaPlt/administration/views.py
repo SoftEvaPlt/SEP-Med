@@ -94,6 +94,11 @@ def indicators_view(request):
             cache.set('page', int(request.GET.get('page')))
         else:
             cache.set('page', 1)
+            cache.set('ser_1', '')
+            cache.set('ser_2', '')
+            cache.set('ser_3', '')
+            cache.set('ser_4', '全部')
+            cache.set('ser_5', '全部')
     if request.POST.get('action') == 'search':
         cache.set('ser_1',request.POST.get('category'))
         cache.set('ser_2',request.POST.get('name'))
@@ -224,6 +229,11 @@ def scenes_view(request):
             cache.set('page', int(request.GET.get('page')))
         else:
             cache.set('page', 1)
+            cache.set('ser_1', '')
+            cache.set('ser_2', '')
+            cache.set('ser_3', '')
+            cache.set('ser_4', '全部')
+            cache.set('ser_5', '全部')
     if request.POST.get('action') == 'search':
         cache.set('ser_1',request.POST.get('name'))
         cache.set('ser_2',request.POST.get('description'))
