@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 在<head>标签中添加以下引用 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .highlight-green {
+            background-color: #228B22; /* 绿色背景 */
+        }
+
+        .highlight-red {
+            background-color: #FF4500; /* 红色背景 */
+        }
+
+        h3 {
+            color: #ACC0E0; /* 设置文字颜色为蓝色，你可以根据需要更改颜色值 */
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="contentToSaveAsPDF">
+    <h2>安全评估报告</h2>
+    <h3> 创建人: {{creator }}     创建时间:{{created_time}}</h3>
+    <table id="editableTable">
+        <tbody>
+        {{ safety_assessment_table|safe }}
+        </tbody>
+    </table>
+    <!-- 添加 "Generate Report" 按钮 -->
+    <button id="generateReportButton">Generate Report</button>
+</div>
+</body>
+
+<script>
+    document.getElementById('generateReportButton').addEventListener('click', function () {
+        // 获取要保存为 PDF 的 DOM 元素
+        var pdfContent = document.getElementById('contentToSaveAsPDF');
+
+        // 在生成 PDF 之前移除按钮
+        var generateButton = pdfContent.querySelector('#generateReportButton');
+        if (generateButton) {
+            generateButton.remove();
+        }
+
+        // 设置生成 PDF 的选项，包括文件名
+        var options = {
+            filename: 'report.pdf',
+            // 其他选项...
+        };
+
+        // 使用 html2pdf 将 DOM 元素保存为 PDF
+        html2pdf(pdfContent, options);
+    });
+</script>
+</html>
