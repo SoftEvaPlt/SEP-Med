@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : SoftEvaPlt
+ Source Server         : SEP-Med
  Source Server Type    : MySQL
  Source Server Version : 100508 (10.5.8-MariaDB-1:10.5.8+maria~focal)
- Source Host           : localhost:3306
- Source Schema         : SoftEvaPlt
+ Source Host           : localhost:3307
+ Source Schema         : test
 
  Target Server Type    : MySQL
  Target Server Version : 100508 (10.5.8-MariaDB-1:10.5.8+maria~focal)
  File Encoding         : 65001
 
- Date: 05/11/2023 23:17:49
+ Date: 20/11/2023 14:25:00
 */
 
 SET NAMES utf8mb4;
@@ -29,11 +29,7 @@ CREATE TABLE `safety_indicator`  (
   `si_creator` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '安全指标创建人',
   `si_create_time` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP COMMENT '安全指标创建时间',
   PRIMARY KEY (`si_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of safety_indicator
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for scene
@@ -47,11 +43,7 @@ CREATE TABLE `scene`  (
   `scene_creator` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '场景创建人',
   `scene_create_time` timestamp NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP COMMENT '场景创建时间',
   PRIMARY KEY (`scene_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of scene
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for task
@@ -67,8 +59,8 @@ CREATE TABLE `task`  (
   `product_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '产品名称',
   `product_version` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '产品版本号',
   `product_description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '产品描述',
-  `product_TD` blob NULL COMMENT '产品拓扑图',
-  `product_AD` blob NULL COMMENT '产品架构图',
+  `product_TD` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '产品拓扑图',
+  `product_AD` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '产品架构图',
   `app_IP` int UNSIGNED NULL DEFAULT NULL COMMENT '应用IP',
   `app_domain_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '应用域名',
   `app_starting_URL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '起始URL',
@@ -82,11 +74,7 @@ CREATE TABLE `task`  (
   INDEX `task_creator`(`task_creator` ASC) USING BTREE,
   CONSTRAINT `task_ibfk_1` FOREIGN KEY (`scene_id`) REFERENCES `scene` (`scene_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `task_ibfk_2` FOREIGN KEY (`task_creator`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of task
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for task_evaluation
@@ -100,11 +88,7 @@ CREATE TABLE `task_evaluation`  (
   INDEX `task_id`(`task_id` ASC) USING BTREE,
   CONSTRAINT `task_evaluation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `task_evaluation_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of task_evaluation
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for task_operation
@@ -118,11 +102,7 @@ CREATE TABLE `task_operation`  (
   INDEX `task_id`(`task_id` ASC) USING BTREE,
   CONSTRAINT `task_operation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `task_operation_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of task_operation
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for task_si
@@ -135,11 +115,17 @@ CREATE TABLE `task_si`  (
   INDEX `si_id`(`si_id` ASC) USING BTREE,
   CONSTRAINT `task_si_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`task_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `task_si_ibfk_2` FOREIGN KEY (`si_id`) REFERENCES `safety_indicator` (`si_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of task_si
+-- Table structure for task_state_table
 -- ----------------------------
+DROP TABLE IF EXISTS `task_state_table`;
+CREATE TABLE `task_state_table`  (
+  `task_state_id` int NOT NULL DEFAULT 0 COMMENT '任务状态',
+  `task_state_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务状态名称',
+  PRIMARY KEY (`task_state_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for user
@@ -148,18 +134,14 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `user_id` int NOT NULL COMMENT '用户ID',
   `user_account` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户账号',
-  `user_password` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户密码',
+  `user_password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户密码',
   `user_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户账号',
-  `user_authority` int NOT NULL DEFAULT 0 COMMENT '用户权限',
+  `user_authority` int NOT NULL COMMENT '用户权限',
   `user_email` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户邮箱',
-  `user_phone` int NULL DEFAULT NULL COMMENT '用户电话号码',
+  `user_phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户电话号码',
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `user_account`(`user_account` ASC) USING BTREE,
   UNIQUE INDEX `user_name`(`user_name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user
--- ----------------------------
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

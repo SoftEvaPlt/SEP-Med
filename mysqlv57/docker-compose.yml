@@ -19,7 +19,7 @@ services:
       # - MYSQL_USER=root
 
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       # 存放数据
       - ./data/:/var/lib/mysql:rw
