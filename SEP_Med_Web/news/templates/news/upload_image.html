@@ -27,12 +27,31 @@
                 <form method="post" action="/upload_image/" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
+<<<<<<< HEAD:SoftEvaPlt/news/templates/news/upload_image.html
+                        <label for="td_image">选择产品拓扑图（只支持.jpg或.png格式）：</label>
+                        <input type="file" class="form-control-file" name="td_image" id="td_image">
+                        {% if td_error_message %}
+                          <div class="alert alert-danger" role="alert">
+                            {{ td_error_message }} 
+                          </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="ad_image">选择产品架构图（只支持.jpg或.png格式）：</label>
+                        <input type="file" class="form-control-file" name="ad_image" id="ad_image">
+                        {% if ad_error_message %}
+                          <div class="alert alert-danger" role="alert">
+                            {{ ad_error_message }} 
+                          </div>
+                        {% endif %}
+=======
                         <label for="td_image">选择产品拓扑图：</label>
                         <input type="file" class="form-control-file" name="td_image" id="td_image">
                     </div>
                     <div class="form-group">
                         <label for="ad_image">选择产品架构图：</label>
                         <input type="file" class="form-control-file" name="ad_image" id="ad_image">
+>>>>>>> main:SEP_Med_Web/news/templates/news/upload_image.html
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary" onclick="change_center_URL()">上传图片并保存</button>

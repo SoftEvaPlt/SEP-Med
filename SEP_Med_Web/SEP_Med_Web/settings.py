@@ -133,7 +133,19 @@ STATICFILES_DIRS = [
 # 解决跨源访问
 X_FRAME_OPTIONS = 'ALLOWALL url'
 
+<<<<<<< HEAD:SoftEvaPlt/SoftEvaPlt/settings.py
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 解决跨源访问
+X_FRAME_OPTIONS = 'ALLOWALL url'
+
+# 设置静态文件路径为主目录下的media文件夹
+MEDIA_ROOT = os.path.join(BASE_DIR, 'statics/media')
+MEDIA_IMAGE_PATH = 'statics/media/images/'
+MEDIA_URL = '/media/'
+=======
 # 设置静态文件路径为主目录下的media文件夹
 MEDIA_ROOT = os.path.join(BASE_DIR, 'statics/media')
 MEDIA_IMAGE_PATH = 'statics/media/images/'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+>>>>>>> main:SEP_Med_Web/SEP_Med_Web/settings.py
