@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>医学信息安全评价主页</title>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- 兼容IE浏览器 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 引入 Bootstrap的css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+    <!-- 必须添加的bootstarp的时间控件资源路径 -->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet"> 
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.25.3/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+     <!-- Custom CSS -->
+     <style>
+      .chat-container {
+          width: 80%;
+          overflow-y: scroll;
+          height: 400px;
+          border: 1px solid #ccc;
+          padding: 10px;
+      }
+      .chat-message {
+          margin-bottom: 10px;
+      }
+      .user-message {
+          text-align: right;
+      }
+      .bot-message {
+          text-align: left;
+      }
+  </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+        <h2>医疗问答系统</h2>
+        <div class="chat-container" id="chatContainer">
+          <!--显示对话记录-->
+        </div>
+        <form id="questionForm"  method='POST'>
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="question" class="form-control" id="question" placeholder="请输入您的问题..."
+                  style=width:80%>
+            </div>
+            <button type="submit" class="btn btn-primary">发送</button>
+        </form>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#questionForm').submit(function(event) {
+            // 阻止默认的表单提交行为
+            event.preventDefault();
+    
+            // 获取表单数据
+            var formData = $(this).serialize();
+            console.log(formData)
+    
+            // 发送 POST 请求
+            $.ajax({
+                type: 'POST',
+                url: '/question/',  // 替换成你的后端接口URL
+                data: formData,
+                success: function(response) {
+                    // 清空输入框
+                    $('#question').val('');
+    
+                    // 将回复添加到 chatContainer 中
+                    //$('#chatContainer').append('<div class="chat-message user-message">' + formData + '</div>');
+                    $('#chatContainer').append('<div class="chat-message bot-message">' + response.answer + '</div>');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+    </script>
+  </body>
+</html>

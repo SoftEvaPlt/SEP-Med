@@ -13,4 +13,6 @@ urlpatterns = [
     path('upload_image_page/', views.upload_image_page, name='upload_image_page'),
     path('home/upload_image_page/', views.home_upload_image_page, name='home_upload_image_page'),
     path('reset_task_center/', views.reset_task_center, name='reset_task_center'),
+    path('question/', views.question_page, name='question_page'),
+    path('home/question/', views.home_question_page, name='home_question_page')
 ]

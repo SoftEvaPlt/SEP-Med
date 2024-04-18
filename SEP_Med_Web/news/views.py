@@ -2,7 +2,7 @@ import os
 from django import forms
 from django.conf import settings
 from django.db import IntegrityError
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.cache import cache
 from .models import TaskSi, User  # 导入自定义用户模型
@@ -11,33 +11,11 @@ from .models import Scene
 from .models import TaskStateTable
 from .models import SafetyIndicator
 from .models import Scene
+from question_answer.chatbot_graph import *
 import ipaddress
 
-'''
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        print(username)
-        print(password)
 
-        # 使用自定义用户模型进行身份验证
-        try:
-            user = User.objects.get(user_account=username)
-            if user.user_password == password:
-                # 如果用户名和密码匹配，登录用户
-                # login(request, user)
-                # 重定向到成功页面或主页
-                return redirect('https://www.baidu.com/')
-            else:
-                # 如果密码不匹配，返回到登录页面并显示错误消息
-                return render(request, 'news/login.html', {'error_message': 'Invalid login credentials'})
-        except User.DoesNotExist:
-            # 如果找不到具有提供的用户名的用户，返回到登录页面并显示错误消息
-            return render(request, 'news/login.html', {'error_message': 'User not found'})
-
-    return render(request, 'news/login.html')
-'''
+handler = ChatBotGraph()
 
 def login_view(request):
     if request.method == 'POST':
@@ -387,3 +365,21 @@ def reset_task_center(request):
     cache.clear()
     print("nihao!!!!!!")
     return redirect('/task_center/1/')
+
+def question_page(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        question = 'user：' + question
+        answer = str(question) + '<br>智能医疗助手：' + handler.chat_main(question)
+        
+
+        # cache.set('question', question, timeout=100)  使用cache存储变量？
+        # cache.set('answer', answer, timeout=100)
+
+        # 返回 JSON 响应，包含回答
+        return JsonResponse({'answer': answer})
+    else:
+        return render(request, 'news/question.html')
+
+def home_question_page(request):
+    return render(request, 'news/home_question.html')

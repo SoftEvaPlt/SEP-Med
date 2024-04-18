@@ -82,7 +82,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "HOST": "127.0.0.1",
-        "PORT": "3307",
+        "PORT": "3306",
         "NAME": "SoftEvaPlt",
         "USER": "root",
         "PASSWORD": "sep2023@",
