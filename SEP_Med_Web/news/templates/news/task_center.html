@@ -158,11 +158,7 @@
                         <td>{{ task.task_creator.user_name }}</td>
                         <td>{{ task.task_create_time }}</td>
                         <td>
-<<<<<<< HEAD:SoftEvaPlt/news/templates/news/task_center.html
-                            <a class="btn btn-primary btn-xs">查看</a>
-=======
                             <a class="btn btn-primary btn-xs" href="{% url 'report:report' %}?task_id={{ task.task_id }}">查看</a>
->>>>>>> main:SEP_Med_Web/news/templates/news/task_center.html
                             {% if task.task_state.task_state_name  == '已完成' %}
                               <a class="btn btn-primary btn-xs">上传报告</a>
                               <a class="btn btn-primary btn-xs">检测报告</a>
