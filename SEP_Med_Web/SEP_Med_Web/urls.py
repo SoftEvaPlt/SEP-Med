@@ -15,11 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-<<<<<<< HEAD:SoftEvaPlt/SoftEvaPlt/urls.py
-from django.urls import path, include
-=======
 from django.urls import path,include
->>>>>>> main:SEP_Med_Web/SEP_Med_Web/urls.py
 from django.conf.urls.static import static
 from django.conf import settings
 
