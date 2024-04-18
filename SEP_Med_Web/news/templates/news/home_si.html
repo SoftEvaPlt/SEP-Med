@@ -1,0 +1,40 @@
+{% extends 'news/home_base.html' %}
+
+{% block style %}
+{% endblock %}  
+
+{% block body %}
+    <div class="row">
+      <div class="col-md-3 col-md-offset-1" style="margin-top: 40px;">
+        <div class="dropdown">
+          <label class="control-label">安全指标类型</label>
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width: 195px;">
+            选择
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+            <!-- 需要传入数据库场景列表 -->
+            <li><a href="#" style="width: 195px;">全部</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#" style="width: 195px;">个人家庭</a></li>
+            <li><a href="#" style="width: 195px;">医院社区</a></li>
+            <li><a href="#" style="width: 195px;">移动救治</a></li>
+          </ul>
+        </div> 
+      </div>  
+      <div class="col-md-4" style="background-color: green; margin-top: 40px;">
+        <label class="control-label">安全指标类型</label>
+        <div class="form-group">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="si_name"
+              name="si_name"
+              placeholder="请输入"
+            />
+          </div>
+        </div>
+      </div>
+    </div> 
+{% endblock %} 

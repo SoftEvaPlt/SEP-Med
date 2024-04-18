@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>医学信息安全评价主页</title>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <!-- 兼容IE浏览器 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 引入 Bootstrap的css -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <!-- 包括所有已编译的插件 -->
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+
+    {% block head %}
+    {% endblock %}
+
+    <style type="text/css">
+      a:hover,a:focus{
+          color: #ffffff;
+          text-decoration: none;
+      }
+      .panel-group {
+          background-color: #0d2134;
+          height: 670px;
+          overflow-y: auto;
+      }
+      .panel-group .panel {
+          background-color: #404040;
+          border: none;
+      }   
+      .panel-heading{
+          border-top-left-radius: 0px; 
+          border-top-right-radius: 0px; 
+      }
+      .panel-default>.panel-heading {
+          border: none;
+          color: #ffffff;
+          background-color: #505050;
+      }
+      .panel-default>.panel-heading>span{
+          font-size: 10px;
+      }
+      .panel-default>.panel-heading:active,.panel-default>.panel-heading:hover{
+          background-color: #4a8bc2;
+      }
+      .panel-default>.panel-heading>a:hover{
+          text-decoration: none;
+          background-color: #4a8bc2;
+      }
+      .panel-group .panel-heading+.panel-collapse>.panel-body {
+          border: none;
+      }
+      .panel-body {
+          padding: 0px;
+      }
+      .nav>li{
+          padding: 1px 0px 0px 0px;
+      }
+      .nav>li>a{
+          text-decoration: none;
+          padding: 10px 10px 10px 35px;
+      }
+      .nav>li>a:hover,.nav>li>a:focus{
+          background-color: #505050;
+      }
+      .navbar {
+        margin: 0;
+        padding: 0;
+      }
+      {% block style %}
+      {% endblock %}  
+    </style>
+  </head>
+
+  <body>
+    <!--顶部导航栏部分-->
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" title="logoTitle" href="#">医学信息安全评价</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li role="presentation">
+                    <a href="#">当前用户：<span class="badge">admin</span></a>
+                </li>
+                <li>
+                    <a href="/auth/login/">
+                          <span class="glyphicon glyphicon-lock"></span>退出登录</a>
+                  </li>
+              </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="row">
+      <!--左侧栅格布局-->
+      <div class="col-md-2 col-sm-2 col-xs-2">
+        <!--左侧导航栏部分-->
+        <div class="panel-group" id="panelContainer">
+          <div class="panel panel-default">
+            <div id="header1" class="panel-heading" data-toggle="collapse" data-target="#sub1" data-parent="#panelContainer">
+              <i class="glyphicon glyphicon-list-alt"></i>
+              <h>任务中心</h>
+              <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+            </div>
+            <div id="sub1" class="collapse panel-collapse">
+              <div class="panel-body">
+                <ul class="nav">
+                  <li>
+<<<<<<< HEAD:SoftEvaPlt/news/templates/news/home_base.html
+                    <a href="/home/task_center/1/"><span></span>任务管理</a>
+=======
+                    <a href="/home/task_center/1/">任务管理</a>
+>>>>>>> main:SEP_Med_Web/news/templates/news/home_base.html
+                  </li>
+                  <li>
+                    <a href="/home/task_add">创建任务</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div id="header2" class="panel-heading" data-toggle="collapse" data-target="#sub2" data-parent="#panelContainer">
+              <i class="glyphicon glyphicon-leaf"></i>
+              <h>安全指标中心</h>
+              <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+            </div>
+            <div id="sub2" class="collapse panel-collapse">
+              <div class="panel-body">
+                <ul class="nav">
+                  <li>
+<<<<<<< HEAD:SoftEvaPlt/news/templates/news/home_base.html
+                    <a href="#">安全指标管理</a>
+                  </li>
+                  <li>
+                    <a href="#">导入安全指标</a>
+=======
+                    <a href="/home/indicators">安全指标管理</a>
+                  </li>
+                  <li>
+                    <a href="/home/scenes">安全场景管理</a>
+>>>>>>> main:SEP_Med_Web/news/templates/news/home_base.html
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div id="header3" class="panel-heading" data-toggle="collapse" data-target="#sub3" data-parent="#panelContainer">
+              <i class="glyphicon glyphicon-user"></i>
+              <h>个人中心</h>
+              <span class="glyphicon glyphicon-triangle-right pull-right"></span>
+            </div>
+            <div id="sub3" class="collapse panel-collapse">
+              <div class="panel-body">
+                <ul class="nav">
+                  <li>
+<<<<<<< HEAD:SoftEvaPlt/news/templates/news/home_base.html
+                    <a href="#"><span></span>个人信息</a>
+                  </li>
+                  <li>
+                    <a href="#">添加栏目2</a>
+                  </li>
+                  <li>
+                    <a href="#">添加栏目3</a>
+                  </li>
+                  <li>
+                    <a href="#">添加栏目4</a>
+=======
+                    <a href="#">个人信息</a>
+                  </li>
+                  <li>
+                    <a href="/home/question">医疗问答</a>
+>>>>>>> main:SEP_Med_Web/news/templates/news/home_base.html
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--右侧栅格布局-->
+      <div class="container-fluid">
+        <div class="col-md-10 col-sm-10 col-xs-10">
+          <div class="container">
+          <!-- 页面核心内容 -->
+          <!-- 16:9 aspect ratio -->
+            {% block body %}
+            {% endblock %}   
+          </div>
+        </div> 
+      </div>
+    </div>
+
+    <!-- 底部页脚部分 -->
+    <div class="footer" style="background-color: #0d2134;">
+      <p class="text-center" style="color: white;">
+          2023 &copy;admin
+      </p>
+    </div>
+
+		<script>
+			$(function() {
+				$(".panel-heading").on("click", function(e) {
+					var idLength = e.currentTarget.id.length;
+					var index = e.currentTarget.id.substr(idLength - 1, idLength);
+					$("#sub" + index).on('hidden.bs.collapse', function() {
+						$(e.currentTarget).find("span").removeClass("glyphicon glyphicon-triangle-bottom");
+						$(e.currentTarget).find("span").addClass("glyphicon glyphicon-triangle-right");
+					})
+					$("#sub" + index).on('shown.bs.collapse', function() {
+						$(e.currentTarget).find("span").removeClass("glyphicon glyphicon-triangle-right");
+						$(e.currentTarget).find("span").addClass("glyphicon glyphicon-triangle-bottom");
+					})
+				});
+			});
+
+      // 在父级页面的JavaScript中
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'change_add_URL') {
+            // 修改父级页面的URL
+            window.location.href = event.data.newURL;
+        }
+        if (event.data && event.data.type === 'change_center_URL') {
+          // 修改父级页面的URL
+          window.location.href = event.data.newURL;
+      }
+      }, false);
+      {% block script %}
+      {% endblock %}
+		</script>
+  </body>
+</html>
